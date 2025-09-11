@@ -1,17 +1,17 @@
-// const jwt = require('jsonwebtoken');
-// const JWT_SECRET = process.env.JWT_SECRET;
-// const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const JWT_SECRET = process.env.JWT_SECRET;
+const bcrypt = require('bcrypt');
 const express = require('express');
 const router = express.Router();
 
-// const userExists = require("../middleware/postuserexists");
+const userExists = require("../middleware/postuserexists");
 const generateTokens = require("../middleware/generatetokens");
 const hasRefreshToken = require("../middleware/postuserhasrefreshtoken");
 const authorisation = require("../middleware/authorisation");
 const invalidatetoken = require("../middleware/invalidatetoken");
 
 /* POST user login; auth token */
-router.post('/login', /* userExists, */ function(req, res, next) {
+router.post('/login', userExists, function(req, res, next) {
     // If user does not exist, throw error
     if (!req.match) {
         throw new Error(`Incorrect email or password`);
@@ -70,7 +70,7 @@ router.post('/logout', hasRefreshToken, authorisation, invalidatetoken, function
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-    req.db.from("users").select('id', 'email')
+    req.db.from("users").select('userId', 'email')
     .then((rows) => { 
         res.status(200).json({ Error: false, Message: "Success", Users: rows }); 
     });

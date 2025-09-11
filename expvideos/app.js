@@ -9,8 +9,8 @@ require("dotenv").config();
 // const swaggerUI = require('swagger-ui-express');
 // const swaggerDocument = require('./docs/openapi.json');
 
-const indexRouter = require('./routes/index.js');
-const userRouter = require('./routes/user.js');
+const indexRouter = require('../expvideos/routes/index');
+const userRouter = require('../expvideos/routes/user');
 
 const app = express();
 
@@ -20,7 +20,7 @@ const cors = require('cors');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 
 app.use(logger('dev'));
 app.use(express.json());

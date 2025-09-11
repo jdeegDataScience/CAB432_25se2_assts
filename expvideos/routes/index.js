@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const videosRouter = require("./videos");
-const videoDetailsRouter = require("./videoDetails");
+// const videoDetailsRouter = require("./videoDetails");
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -10,6 +10,6 @@ router.get('/', function(req, res, next) {
 });
 
 router.use('/videos', videosRouter);
-router.use('/videoDetails', videoDetailsRouter);
+// router.use('/videoDetails', videoDetailsRouter);
 
 module.exports = router;

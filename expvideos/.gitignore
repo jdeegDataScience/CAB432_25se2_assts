@@ -1,0 +1,4 @@
+/.env
+selfsigned.*
+
+node_modules
