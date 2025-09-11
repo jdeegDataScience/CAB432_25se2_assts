@@ -37,7 +37,7 @@ router.post('/login', /* userExists, */ function(req, res, next) {
 );
 
 /* POST register user; add to db */
-/* router.post('/register', userExists, function(req, res) { 
+router.post('/register', userExists, function(req, res) { 
     // If user does exist, throw error
     if (req.match) {
         throw new Error(`User already exists`);
@@ -58,7 +58,7 @@ router.post('/login', /* userExists, */ function(req, res, next) {
         });
     };
     return;
-}); */
+});
 
 /* POST refresh token */
 router.post('/refresh', hasRefreshToken, authorisation, invalidatetoken, generateTokens);
