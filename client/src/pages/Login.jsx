@@ -8,7 +8,7 @@ import { AuthContext } from '../App';
 import ErrorAlert from "../components/ErrorAlert";
 
 export default function Login() {
-    const API_URL = `http://4.237.58.241:3000`;
+    const API_URL = `${localStorage.API_URL}`;
     const [error, setError] = useState(null);
     const [authenticated, setAuthenticated] = useContext(AuthContext);
     const [registerForm, setRegisterForm] = useState(false);

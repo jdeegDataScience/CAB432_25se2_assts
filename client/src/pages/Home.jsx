@@ -13,9 +13,9 @@ const Hero = () => (
     <section className="hero">
         {/* content for the hero */}
         <div className="hero_content">
-            <h1 className="hero_title">The Movie Site</h1>
+            <h1 className="hero_title">YouTube Video Downloader</h1>
             <br />  
-            <a href="/movies">Find all the movie and cast info you could ever need (up to 2024)</a>
+            <a href="/videos">Download and store any youTube Video - all you need is the URL!</a>
         </div>
     </section>
 );

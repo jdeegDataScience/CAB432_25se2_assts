@@ -1,21 +1,21 @@
 import React, {createContext, useState } from "react";
 
 /* Components */
-import SearchBar from '../components/SearchBar';
-import MoviesTable from "../components/MoviesTable";
+// import SearchBar from '../components/SearchBar';
+// import VideosTable from "../components/VideosTable";
 
 // context for movie search params
-export const MoviesSearchContext = createContext();
+export const VideosSearchContext = createContext();
 
-export default function Movies() {
-    const [ searchURL, setSearchURL ] = useState(`${localStorage.API_URL}/movies/search?`);
+export default function Videos() {
+    const [ searchURL, setSearchURL ] = useState(`${localStorage.API_URL}/videos/search?`);
 
     return (
-    <MoviesSearchContext.Provider value={[searchURL, setSearchURL]}>
-        <div className="container movies">
-            <SearchBar />
-            <MoviesTable />
+    <VideosSearchContext.Provider value={[searchURL, setSearchURL]}>
+        <div className="container videos">
+            {/* <SearchBar /> */}
+            {/* <VideosTable /> */}
         </div>
-    </MoviesSearchContext.Provider>
+    </VideosSearchContext.Provider>
     )
 }

@@ -8,3 +8,14 @@ module.exports = {
     password: 'L!ddellrootP@55'
   }
 };
+
+/* module.exports = {
+  client: 'pg',
+  connection: {
+    host: 'database-1-instance-1.ce2haupt2cta.ap-southeast-2.rds.amazonaws.com',
+    port: 5432,
+    database: 'cohort_2025',
+    user: 's100',
+    password: 'Jn6CbztWkGqf'
+  }
+}; */

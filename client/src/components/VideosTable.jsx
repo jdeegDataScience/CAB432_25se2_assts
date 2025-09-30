@@ -1,14 +1,14 @@
-import { useState, useContext } from "react";
+/* import { useState, useContext } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
 
 // import context provider
 import { VideosSearchContext } from '../pages/Videos';
-
+ */
 /* Components */
-import FeatureVideo from "../components/FeatureVideo";
-import VideoDetailsButton from "./VideoDetailsButton";
+/* import FeatureVideo from "../components/FeatureVideo";
+import VideoDetailButton from "./VideoDetailButton";
 import ErrorAlert from "./ErrorAlert";
 
 export default function VideosTable() {
@@ -107,7 +107,7 @@ export default function VideosTable() {
             </div>
         </div>
     )
-}
+} */
 
 
 /* useEffect(() => {

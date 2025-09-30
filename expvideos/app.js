@@ -28,9 +28,18 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
+
+// Store SSE connections by userId
+let clients = {};
+// For prototype only (not durable)
+let jobs = {}; // jobId -> { status, userId, youtubeUrl, url?, error? }
+
 app.use((req, res, next) => {
-  req.db = knex     
-  next()
+  req.db = knex;
+  req.clients = clients;
+  req.jobs = jobs;
+  req.sendToUser = sendToUser;
+  next();
 });
 
 // app.use('/docs', swaggerUI.serve);
@@ -38,6 +47,35 @@ app.use((req, res, next) => {
 
 app.use('/', indexRouter);
 app.use('/user', userRouter);
+
+app.get('/events', (req, res) => {
+    console.log('Got /events');
+    const userId = req.user.id; // from auth middleware (e.g. JWT, session)
+    res.set({
+      'Cache-Control': 'no-cache',
+      'Content-Type': 'text/event-stream',
+      'Connection': 'keep-alive'
+    });
+    res.flushHeaders();
+  // Tell the client to retry every 10 seconds if connectivity is lost
+    res.write('retry: 10000\n\n');
+    if (!clients[userId]) clients[userId] = [];
+    clients[userId].push(res);
+
+    req.on('close', () => {
+        clients[userId] = clients[userId].filter(r => r !== res);
+        if (clients[userId].length === 0) delete clients[userId];
+    });
+});
+
+// Send event to a specific user
+function sendToUser(userId, eventName, data) {
+    if (!clients[userId]) return;
+    for (const res of clients[userId]) {
+        res.write(`event: ${eventName}\n`);
+        res.write(`data: ${JSON.stringify(data)}\n\n`);
+    }
+}
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

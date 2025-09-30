@@ -6,7 +6,7 @@ import React,{ createContext, useEffect, useState } from 'react';
 import Home from "./pages/Home"
 import Login from "./pages/Login";
 import Videos from './pages/Videos';
-import VideoDetails from './pages/VideoDetails';
+// import VideoDetails from './pages/VideoDetails';
 
 // context for user authentication
 export const AuthContext = createContext();
@@ -17,11 +17,11 @@ import ErrorAlert from "./components/ErrorAlert";
 import Footer from './components/Footer';
 
 /*  Hooks */
-// import useRefreshToken from './hooks/useRefreshToken';
+import useRefreshToken from './hooks/useRefreshToken';
 
 
 function App() {
-    localStorage.setItem("API_URL", `http://4.237.58.241:3000`);
+    localStorage.setItem("API_URL", `http://localhost:3000`);
     const [authenticated, setAuthenticated] = useState(false);
     const [ isTokensRefreshed, loading, refreshError ] = useRefreshToken();
     const [error, setError] = useState();
@@ -56,7 +56,7 @@ function App() {
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path="/Videos" element={<Videos />} />
-                        <Route path="/VideoDetails/:videoID" element={<VideoDetails />} />
+                        {/* <Route path="/VideoDetails/:videoID" element={<VideoDetails />} /> */}
                         <Route path="/Login" element={<Login />} />
                     </Routes>
                     <Footer />

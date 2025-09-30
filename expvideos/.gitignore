@@ -2,3 +2,7 @@
 selfsigned.*
 
 node_modules
+
+*-player-script.js
+
+A1_response_to_criteria.md
