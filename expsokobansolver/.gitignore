@@ -3,6 +3,8 @@ selfsigned.*
 
 node_modules
 
+uploads
+
 *-player-script.js
 
-A1_response_to_criteria.md
+*.md
