@@ -4,6 +4,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 module.exports = function(req, res, next) {
     const token = req.token;
     try {
+        console.log("\nVerifying token...");
         const decoded = jwt.verify(token, JWT_SECRET);
         /* standardised reference for user email between middlewares */
         req.user = {};   

@@ -5,7 +5,7 @@ sys.stderr.reconfigure(line_buffering=True)
 # Directory of the current script
 script_dir = os.path.dirname(os.path.abspath(__file__))
 project_dir = os.path.abspath(os.path.join(script_dir, '..'))  # one level up
-gif_dir = os.path.join(project_dir, 'solutiongifs')
+gif_dir = os.path.join(project_dir, 'solutions', 'gifs')
 
 from PIL import Image
 from sokoban import Warehouse
@@ -75,15 +75,16 @@ def move_worker(warehouse, direction):
 # ----------------------------------------------------------------------------
 
 def main():
-    if len(sys.argv) < 3:
+    if len(sys.argv) < 4:
         print(json.dumps({"error":"Usage: viz_sokoban_refactored.py PUZZLE_FILE SOLUTION_JSON"}))
         sys.exit(1)
 
-    puzzle_file = sys.argv[1]
+    puzzle_path = sys.argv[1]
     solution = json.loads(sys.argv[2])
+    puzzle_id = sys.argv[3]
 
     warehouse = Warehouse()
-    warehouse.load_warehouse(puzzle_file)
+    warehouse.load_warehouse(puzzle_path)
     frames = []
 
     # initial state
@@ -93,8 +94,10 @@ def main():
     for move in solution:
         move_worker(warehouse, move)     # reuse your move_worker() logic
         frames.append(render_frame_pil(warehouse))
+    
+    gifName = f"sokoban_{puzzle_id}_soln.gif"
 
-    outpath = os.path.join(gif_dir, f"sokoban_{os.getpid()}.gif")
+    outpath = os.path.join(gif_dir, gifName)
     frames[0].save(
         outpath,
         save_all=True,
@@ -102,7 +105,7 @@ def main():
         duration=300,  # ms per frame
         loop=0
     )
-    print(json.dumps({"solutionGIF": outpath}))
+    print(json.dumps({"solutionGIF": gifName}))
 
 if __name__ == "__main__":
     main()

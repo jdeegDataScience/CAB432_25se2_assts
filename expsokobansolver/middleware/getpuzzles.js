@@ -1,14 +1,16 @@
+require('dotenv').config();
+
 /* GET movies search results. */
 module.exports = function(req, res, next) {
     const selectCols = [
-        'puzzleId', 'title', 'thumbnail',
-        'length', 'ts'
+        'puzzleId', 'userId', 'name', 'solnVis',
+        'solnMoves', 'solnCost', 'ts'
     ];
     
-    // 1. Return all movies IF no search terms for [title / year] 
-    if (!req.query.title && !req.query.year) {
+    // 1. Return all puzzles IF user.email === admin] 
+    if (req.user.email === process.env.ADMIN_EMAIL) {
         req.db.from("puzzles").select(selectCols)
-        .where({userId: req.user.id}).orderBy('ts')
+        .orderBy('ts')
         .then((rows) => {
             req.puzzles = rows;
         })
@@ -22,13 +24,15 @@ module.exports = function(req, res, next) {
         });
     }
     else {
-        req.db.from("puzzles").select(selectCols).where((builder) => {
+        req.db.from("puzzles").select(selectCols)
+        .where({userId: req.user.id}).orderBy('ts')
+        /* .where((builder) => {
             builder.where({userId: req.user.id});
             if (req.query.title) {builder.whereILike("title", `%${req.query.title}%`)};
             if (req.query.year) {builder.where("year", parseInt(req.query.year))};
-        }).orderBy('tconst')
+        }) */
         .then((rows) => {
-            req.movies = rows;
+            req.puzzles = rows;
         })
         .then(_ => {
             next();

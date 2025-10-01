@@ -9,11 +9,11 @@ module.exports = async function renderSolution(req, res, next) {
     if (!req.puzzle) {
       return res.status(400).json({ error: true, message: 'Missing puzzle data from previous step' });
     }
-    const { cost, solution, puzzleFile } = req.puzzle; // solution as array of strings
+    const { cost, solution, whPath, whId, ...rest  } = req.puzzle; // solution as array of strings
     
     const scriptPath = path.resolve(__dirname, '../py_scripts/vizSokobanSoln.py');
-    const puzzleFileAbsPath = path.resolve(puzzleFile);
-    const args = [puzzleFileAbsPath, JSON.stringify(solution)];
+    const puzzleFileAbsPath = path.resolve(whPath);
+    const args = [puzzleFileAbsPath, JSON.stringify(solution), whId];
 
     /* const command = `python "${scriptPath}" "${puzzleFileAbsPath}" '${JSON.stringify(solution)}'`;
     console.log('\nExecuting command:', command);
@@ -31,12 +31,10 @@ module.exports = async function renderSolution(req, res, next) {
     let stderr = '';
 
     py.stdout.on('data', (data) => {
-      console.log(`[python stdout]: ${data}`);
       stdout += data.toString();
     });
 
     py.stderr.on('data', (data) => {
-      console.error(`[python stderr]: ${data}`);
       stderr += data.toString();
     });
 
@@ -47,12 +45,14 @@ module.exports = async function renderSolution(req, res, next) {
 
       try {
         const result = JSON.parse(stdout);
-        res.json(result);
+        req.puzzle.soln.vis = result.solutionGIF; // solution gif file name
+        next();
       } catch (err) {
-        res.status(500).json({ error: 'Failed to parse Python output', stdout, stderr });
+        return res.status(500).json({ error: 'Failed to parse Python output', stdout, stderr });
       }
     });
   } catch (err) {
-    // return // res.status(500).json({ error: true, message: err.message });
+    console.error('Error in visualizesolution middleware:', err);
+    return res.status(500).json({ error: true, message: err.message });
   }
 };

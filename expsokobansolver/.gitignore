@@ -3,7 +3,8 @@ selfsigned.*
 
 node_modules
 
-uploads
+warehouses
+solutions
 
 *-player-script.js
 

@@ -1,4 +1,7 @@
-const LOCAL_DB_CONNECTION = process.env.LOCAL_DB_CONNECTION;
+require('dotenv').config();
+
+const LOCAL_DB_CONNECTION = JSON.parse(process.env.LOCAL_DB_CONNECTION);
+
 module.exports = {
   client: 'mysql2',
   connection: LOCAL_DB_CONNECTION
