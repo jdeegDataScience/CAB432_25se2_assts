@@ -44,9 +44,4 @@ router.get('/', getpuzzles, function(req, res, next) {
     });
 });
 
-/* GET Puzzles page. */
-// router.get('/', function(req, res, next) {
-//   res.render('index', { title: 'The Puzzles Search Page' });
-// });
-
 module.exports = router;
