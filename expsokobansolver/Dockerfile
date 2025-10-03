@@ -5,7 +5,7 @@ WORKDIR /app
 
 # COPY package*.json ./
 COPY . .
-RUN npm install --production
+RUN npm ci --only=production
 RUN sudo apt install postgresql-client 
 
 COPY . .

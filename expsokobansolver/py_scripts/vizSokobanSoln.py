@@ -2,17 +2,14 @@
 import sys, os, json, tempfile
 sys.stdout.reconfigure(line_buffering=True)
 sys.stderr.reconfigure(line_buffering=True)
-# Directory of the current script
-script_dir = os.path.dirname(os.path.abspath(__file__))
-project_dir = os.path.abspath(os.path.join(script_dir, '..'))  # one level up
-gif_dir = os.path.join(project_dir, 'solutions', 'gifs')
-
 from PIL import Image
 from sokoban import Warehouse
 # move actions 
 direction_offset = {'Left' :(-1,0), 'Right':(1,0) , 'Up':(0,-1), 'Down':(0,1)} # (x,y) = (column,row)
 
 # dictionary of images for the display of the warehouse
+# Directory of the current script
+script_dir = os.path.dirname(os.path.abspath(__file__))
 image_dict={
     'wall':Image.open(os.path.join(script_dir, '..', 'public', 'images', 'wall.gif')),
     'target':Image.open(os.path.join(script_dir, '..', 'public', 'images', 'hole.gif')),
@@ -81,7 +78,7 @@ def main():
 
     puzzle_path = sys.argv[1]
     solution = json.loads(sys.argv[2])
-    puzzle_id = sys.argv[3]
+    outpath = sys.argv[3]
 
     warehouse = Warehouse()
     warehouse.load_warehouse(puzzle_path)
@@ -95,17 +92,14 @@ def main():
         move_worker(warehouse, move)     # reuse your move_worker() logic
         frames.append(render_frame_pil(warehouse))
     
-    gifName = f"sokoban_{puzzle_id}_soln.gif"
-
-    outpath = os.path.join(gif_dir, gifName)
     frames[0].save(
         outpath,
         save_all=True,
         append_images=frames[1:],
-        duration=300,  # ms per frame
+        duration=350,  # ms per frame
         loop=0
     )
-    print(json.dumps({"solutionGIF": gifName}))
+    print(json.dumps({"solutionGIF": outpath}))
 
 if __name__ == "__main__":
     main()

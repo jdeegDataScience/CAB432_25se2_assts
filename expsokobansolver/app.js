@@ -3,8 +3,6 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-require("dotenv").config();
-
 
 // const swaggerUI = require('swagger-ui-express');
 // const swaggerDocument = require('./docs/openapi.json');
@@ -29,16 +27,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 
-// Store SSE connections by userId
-let clients = {};
-// For prototype only (not durable)
-let jobs = {}; // jobId -> { status, userId, youtubeUrl, url?, error? }
-
 app.use((req, res, next) => {
   req.db = knex;
-  req.clients = clients;
-  req.jobs = jobs;
-  req.sendToUser = sendToUser;
   next();
 });
 
@@ -67,15 +57,6 @@ app.get('/events', (req, res) => {
         if (clients[userId].length === 0) delete clients[userId];
     });
 });
-
-// Send event to a specific user
-function sendToUser(userId, eventName, data) {
-    if (!clients[userId]) return;
-    for (const res of clients[userId]) {
-        res.write(`event: ${eventName}\n`);
-        res.write(`data: ${JSON.stringify(data)}\n\n`);
-    }
-}
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

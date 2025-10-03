@@ -1,7 +1,28 @@
 const express = require('express');
+require("dotenv").config();
 const router = express.Router();
 const multer = require('multer');
-const upload = multer({ dest: 'warehouses/' }); // files saved here
+const multerS3 = require('multer-s3')
+const { s3 } = require("../services/aws");
+
+const upload = multer({ // files saved here
+    storage: multerS3({
+        s3,
+        bucket: process.env.S3_BUCKET,
+        acl: 'authenticated-read',
+        metadata: function (req, file, cb) {
+            cb(null, {
+                warehouse: file.originalname.split(".")[0],
+                userId: req.user.id
+            });
+        },
+        key: function (req, file, cb) {
+            const ext = file.originalname.split('.').pop();
+            const baseName = file.originalname.replace(/\.[^/.]+$/, "");
+            cb(null, `warehouses/${req.user.id}/${baseName}_${Date.now().toString()}.${ext}`);
+        }
+    }) 
+}); 
 
 const getpuzzles = require("../middleware/getpuzzles");
 const insertmetadata = require("../middleware/insertmetadata");

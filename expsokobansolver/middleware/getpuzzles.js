@@ -3,8 +3,7 @@ require('dotenv').config();
 /* GET movies search results. */
 module.exports = function(req, res, next) {
     const selectCols = [
-        'puzzleId', 'userId', 'name', 'solnVis',
-        'solnMoves', 'solnCost', 'ts'
+        'puzzleId', 'userId', 'name', 'cost', 'ts'
     ];
     
     // 1. Return all puzzles IF user.email === admin] 
@@ -26,11 +25,6 @@ module.exports = function(req, res, next) {
     else {
         req.db.from("puzzles").select(selectCols)
         .where({userId: req.user.id}).orderBy('ts')
-        /* .where((builder) => {
-            builder.where({userId: req.user.id});
-            if (req.query.title) {builder.whereILike("title", `%${req.query.title}%`)};
-            if (req.query.year) {builder.where("year", parseInt(req.query.year))};
-        }) */
         .then((rows) => {
             req.puzzles = rows;
         })

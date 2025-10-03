@@ -25,9 +25,7 @@ async function main() {
         table.string('puzzleId').unique({deferrable: 'not deferrable'}).notNullable();
         table.integer('userId').notNullable();
         table.string('name', 235).notNullable();
-        table.string('solnVis', 235).notNullable();
-        table.string('solnMoves', 235).notNullable();
-        table.integer('solnCost').notNullable();
+        table.integer('cost').notNullable();
         table.timestamp('ts').defaultTo(knex.fn.now());
     });
 }

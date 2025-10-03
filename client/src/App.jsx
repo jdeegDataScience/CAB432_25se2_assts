@@ -5,7 +5,7 @@ import React,{ createContext, useEffect, useState } from 'react';
 /* Pages */
 import Home from "./pages/Home"
 import Login from "./pages/Login";
-import Videos from './pages/Videos';
+import Videos from './pages/Puzzles';
 // import VideoDetails from './pages/VideoDetails';
 
 // context for user authentication
@@ -56,7 +56,6 @@ function App() {
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path="/Videos" element={<Videos />} />
-                        {/* <Route path="/VideoDetails/:videoID" element={<VideoDetails />} /> */}
                         <Route path="/Login" element={<Login />} />
                     </Routes>
                     <Footer />

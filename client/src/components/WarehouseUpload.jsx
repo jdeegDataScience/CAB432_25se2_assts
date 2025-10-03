@@ -1,12 +1,12 @@
 import { useState, useEffect, useContext } from "react";
-import { useSearchParams  } from 'react-router-dom';
 
 // import context provider
-import { VideosSearchContext } from '../pages/Videos';
+import { PuzzlesSearchContext } from '../pages/Puzzles';
 
 export default function SearchBar() {
-    const base_url = `${localStorage.API_URL}/videos`;
-    const [ searchURL, setSearchURL ] = useContext(VideosSearchContext);
+    const base_url = `${localStorage.API_URL}/puzzles/solve
+    `;
+    const [ searchURL, setSearchURL ] = useContext(PuzzlesSearchContext);
     const [ searchParams, setSearchParams ] = useSearchParams();
 
     const [inputs, setInputs] = useState({title:'', year:''});
@@ -55,7 +55,7 @@ export default function SearchBar() {
     return (
     <div className="search-bar">
         <form className="search-form" id="search-form">
-            <label htmlFor="title">Video Title</label>
+            <label htmlFor="title">Puzzle Title</label>
             <input
                 id="title"
                 name="title"
@@ -76,9 +76,9 @@ export default function SearchBar() {
             <div className="submit-container">
             {
                 yearValid ? <button  type="button" onClick={handleClick}>
-                Search Videos</button> : 
+                Search Puzzles</button> : 
                 <button id="search-button" type="button" disabled="true">
-                    Search Videos</button>
+                    Search Puzzles</button>
             }            
             </div>            
         </form>
