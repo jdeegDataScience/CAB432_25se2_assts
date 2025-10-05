@@ -2,6 +2,7 @@ const options = require('./knexfile.js');
 const knex = require('knex')(options);
 
 module.exports = async function createDBtables() {
+    console.log(options);
     // check if table 'users' exists
     knex.schema.hasTable('users').then(function (exists) {
         if (!exists) {
