@@ -36,7 +36,7 @@ memch.aSet = util.promisify(memch.set);
 module.exports = {
     s3,
     // s3presigner,
-    dynamo,
+    // dynamo,
     secrets,
     cognito,
     // ses,
