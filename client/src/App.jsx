@@ -1,12 +1,11 @@
 import './App.css'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import React,{ createContext, useEffect, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 
 /* Pages */
 import Home from "./pages/Home"
 import Login from "./pages/Login";
 import Videos from './pages/Puzzles';
-// import VideoDetails from './pages/VideoDetails';
 
 // context for user authentication
 export const AuthContext = createContext();

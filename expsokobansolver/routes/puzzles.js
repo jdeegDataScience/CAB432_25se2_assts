@@ -26,7 +26,7 @@ const upload = multer({ // files saved here
 
 const getpuzzles = require("../middleware/getpuzzles");
 const insertmetadata = require("../middleware/insertmetadata");
-// const downloadpuzzle = require("../middleware/downloadpuzzle");
+const downloadpuzzle = require("../middleware/downloadpuzzle");
 const hasbearertoken = require("../middleware/hasbearertoken");
 const authorisation = require("../middleware/authorisation");
 const getuserid = require("../middleware/getuserid");
@@ -40,7 +40,7 @@ router.post('/solve', upload.single('file'), solvepuzzle, visualizesolution, ins
     res.json(req.puzzle);
 });
 
-// router.get('/download', hasbearertoken, authorisation, downloadpuzzle);
+router.get('/download', downloadpuzzle);
 
 router.get('/', getpuzzles, function(req, res, next) {
     const pageNum = req.query?.page ? parseInt(req.query.page) : 1;
@@ -49,19 +49,18 @@ router.get('/', getpuzzles, function(req, res, next) {
     const last = Math.ceil(totalPuzzles/perPage);
     const pageStart = (pageNum - 1) * perPage; // start index of requested rows set 
     const pageEnd = totalPuzzles - pageStart < perPage ? totalPuzzles : pageStart+perPage;
+    const userGroup = req.user?.groups?.includes("admins") ? "admin" : "user";
 
     const currPagePuzzles = req.puzzles.slice(pageStart, pageEnd);
     Promise.resolve(currPagePuzzles.map((puzzle) => ({
         id: puzzle.puzzleId,
         user: puzzle.userId,
         name: puzzle.name,
-        solutionGIF: puzzle.solnGIF,
-        solutionMoves: puzzle.solnMoves,
-        solutionCost: puzzle.solnCost,
+        cost: puzzle.cost,
         ts: puzzle.ts
     })))
     .then((puzzles) => {
-        res.json({ data: puzzles, pagination: {total: totalPuzzles, lastPage: last, perPage: perPage, currentPage: pageNum, from: pageStart, to: pageEnd } });
+        res.json({ userGroup, data: puzzles, pagination: {total: totalPuzzles, lastPage: last, perPage: perPage, currentPage: pageNum, from: pageStart, to: pageEnd } });
     });
 });
 

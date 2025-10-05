@@ -1,21 +1,12 @@
 require('dotenv').config();
 
-/* const LOCAL_DB_CONNECTION = JSON.parse(process.env.LOCAL_DB_CONNECTION);
-
 module.exports = {
-  client: 'mysql2',
-  connection: LOCAL_DB_CONNECTION
-}; */
-
-const PG_PASSWORD = process.env.PG_PASSWORD;
-
-module.exports = {
-    client: 'pg',
+    client: process.env?.DB_CLIENT || 'mysql2',
     connection: {
-        host: "database-1-instance-1.ce2haupt2cta.ap-southeast-2.rds.amazonaws.com",
-        port: "5432",
-        database: "cohort_2025",
-        user: "s100",
-        password: PG_PASSWORD
+        host: process.env?.DB_HOST || "127.0.0.1",
+        port: process.env?.DB_PORT || 3306,
+        database: process.env?.DB_NAME || "videos",
+        user: process.env?.DB_USER || "root",
+        password: process.env?.DB_PASSWORD
     } 
 };

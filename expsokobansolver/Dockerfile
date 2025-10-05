@@ -1,15 +1,17 @@
 # syntax=docker/dockerfile:1
 FROM node:22-alpine
 
-WORKDIR /app
+# Install Python (example: Python 3.10)
+RUN apt-get update && apt-get install -y python3 python3-pip
 
-# COPY package*.json ./
+# Set python3 as default python
+RUN ln -s /usr/bin/python3 /usr/bin/python
+
+# copy app files
+WORKDIR /app
 COPY . .
 RUN npm ci --only=production
-RUN sudo apt install postgresql-client 
-
-COPY . .
 
 CMD ["node", "app.js"]
 
-EXPOSE 3000
+EXPOSE 80

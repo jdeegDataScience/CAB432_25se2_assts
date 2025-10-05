@@ -3,6 +3,12 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const loadSecrets = require("./loadSecrets");
+
+(async () => {
+  await loadSecrets();   // fetch secrets at container startup
+})();
+
 
 // const swaggerUI = require('swagger-ui-express');
 // const swaggerDocument = require('./docs/openapi.json');

@@ -1,16 +1,18 @@
 module.exports = function(req, res, next) {
-    // 1. Check email and password in req.body
-    if (!req.body.email || !req.body.password) {
+    // 1. Check email in req.body
+    if (!req.body.email && !req.body.username) {
         res.status(400).json({ error: true, 
-            message: `Request body incomplete, both email and password are required` });
+            message: `Request body incomplete, email or username missing.` });
         return; 
     }
-    else {
-        const email = req.body.email;        
+    else {        
         req.db
         .from("users")
         .select('*') 
-        .where({email: email})
+        .where((builder) => {
+            if (req.body.email) {builder.where("email", `%${req.body.email}%`)};
+            if (req.body.username) {builder.where("username", `%${req.body.username}%`)};
+        })
         .then((users) => {
             if (users.length !== 1) {
                 req.match = false;

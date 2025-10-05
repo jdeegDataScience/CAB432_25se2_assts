@@ -1,14 +1,13 @@
-const jwt = require('jsonwebtoken');
-const JWT_SECRET = process.env.JWT_SECRET;
+const { jwtIdVerifier } = require("../services/aws");
 
-module.exports = function(req, res, next) {
-    const token = req.token;
+module.exports = async function(req, res, next) {
     try {
         console.log("\nVerifying token...");
-        const decoded = jwt.verify(token, JWT_SECRET);
+        const decoded = await jwtIdVerifier.verify(req.token);
         /* standardised reference for user email between middlewares */
         req.user = {};   
         req.user.email = decoded.email;
+        req.user.groups = decoded["cognito:groups"];
         req.db
         .from("usersbltokens")
         .select('*') 

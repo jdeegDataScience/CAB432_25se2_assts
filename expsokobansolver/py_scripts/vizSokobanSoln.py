@@ -1,5 +1,5 @@
 #!/usr/bin/env python    
-import sys, os, json, tempfile
+import sys, os, json
 sys.stdout.reconfigure(line_buffering=True)
 sys.stderr.reconfigure(line_buffering=True)
 from PIL import Image
