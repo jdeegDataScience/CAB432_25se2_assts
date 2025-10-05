@@ -70,6 +70,14 @@ function onListening() {
     try {
         await loadEnv();   // fetch env params and secrets at container startup
         await createDBtables(); // create any missing DB tables at startup
+        
+
+        /**
+         * Create HTTP server.
+         */
+        var app = require('../app');
+        var server = http.createServer(app);
+
         /**
          * Get port from environment and store in Express.
          */
@@ -77,12 +85,6 @@ function onListening() {
         var port = normalizePort(process.env.PORT || '3000');
         console.log("Listening on port " + port);
         app.set('port', port);
-
-        /**
-         * Create HTTP server.
-         */
-        var app = require('../app');
-        var server = http.createServer(app);
 
         /**
          * Listen on provided port, on all network interfaces.

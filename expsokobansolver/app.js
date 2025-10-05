@@ -8,9 +8,6 @@ const logger = require('morgan');
 // const swaggerUI = require('swagger-ui-express');
 // const swaggerDocument = require('./docs/openapi.json');
 
-const indexRouter = require('./routes/index');
-const userRouter = require('./routes/user');
-
 const app = express();
 
 const options = require('./knexfile.js');
@@ -35,7 +32,8 @@ app.use((req, res, next) => {
 
 // app.use('/docs', swaggerUI.serve);
 // app.get('/docs', swaggerUI.setup(swaggerDocument));
-
+const indexRouter = require('./routes/index');
+const userRouter = require('./routes/user');
 app.use('/', indexRouter);
 app.use('/user', userRouter);
 
