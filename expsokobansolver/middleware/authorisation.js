@@ -1,4 +1,11 @@
-const { jwtIdVerifier } = require("../services/aws");
+const { CognitoJwtVerifier } = require("aws-jwt-verify");
+const jwtIdVerifier = CognitoJwtVerifier.create({
+    userPoolId: process.env.USER_POOL_ID,
+    tokenUse: "id",
+    groups: ["users", "admins"],
+    clientId: process.env.APP_CLIENT_ID
+});
+
 
 module.exports = async function(req, res, next) {
     try {

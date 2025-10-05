@@ -5,7 +5,6 @@ const { SecretsManagerClient } = require("@aws-sdk/client-secrets-manager");
 // const { SESClient } = require("@aws-sdk/client-ses");
 // const { S3RequestPresigner } = require("@aws-sdk/s3-request-presigner");
 const { CognitoIdentityProviderClient } = require("@aws-sdk/client-cognito-identity-provider");
-const { CognitoJwtVerifier } = require("aws-jwt-verify");
 const { SSMClient } = require("@aws-sdk/client-ssm");
 const Memcached = require("memcached");
 const util = require("node:util");
@@ -13,13 +12,6 @@ const util = require("node:util");
 // Replace this with the endpoint for your Elasticache instance
 const memcachedAddress = "something.cfg.apse2.cache.amazonaws.com:11211";
 
-
-const jwtIdVerifier = CognitoJwtVerifier.create({
-    userPoolId: process.env.USER_POOL_ID,
-    tokenUse: "id",
-    groups: ["users", "admins"],
-    clientId: process.env.APP_CLIENT_ID
-});
 
 const region = process.env.AWS_REGION || 'ap-southeast-2';
 
@@ -49,6 +41,5 @@ module.exports = {
     cognito,
     // ses,
     ssm,
-    memch,
-    jwtIdVerifier
+    memch
 };
