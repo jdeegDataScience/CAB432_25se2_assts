@@ -8,8 +8,8 @@ const logger = require('morgan');
 // const swaggerUI = require('swagger-ui-express');
 // const swaggerDocument = require('./docs/openapi.json');
 
-const indexRouter = require('../expsokobansolver/routes/index');
-const userRouter = require('../expsokobansolver/routes/user');
+const indexRouter = require('./routes/index');
+const userRouter = require('./routes/user');
 
 const app = express();
 

@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { memch } = require("../../services/aws");
+const { memch } = require("../services/aws");
 
 /* GET movies search results. */
 module.exports = async function(req, res, next) {

@@ -20,4 +20,4 @@ COPY . .
 # Start the app
 CMD ["node", "app.js"]
 
-EXPOSE 80
+EXPOSE 3000
