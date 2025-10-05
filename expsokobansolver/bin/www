@@ -6,14 +6,12 @@
 var debug = require('debug')('expsokobansolver:server');
 var http = require('http');
 const loadEnv = require("../services/loadEnv");
-const createDBtables = require("../pgdbsetup");
-
-
 
 // --- main startup wrapped in async ---
 (async () => {
     try {
         await loadEnv();   // fetch env params and secrets at container startup
+        const createDBtables = require("../pgdbsetup");
         await createDBtables(); // create any missing DB tables at startup
         
 

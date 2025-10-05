@@ -8,6 +8,7 @@ module.exports = async function loadEnv() {
     const secretCommand = new GetSecretValueCommand({ SecretId: "n11022639-asst2" });
     const secretResponse = await secrets.send(secretCommand);
     const secretsParsed = JSON.parse(secretResponse.SecretString);
+    console.log("Secrets: ", Object.keys(secretsParsed));
     
     // load parameters from SSM Parameter Store
     const getBucketNameCommand = new GetParameterCommand({ Name: "/n11022639/asst2/bucket_name" });
