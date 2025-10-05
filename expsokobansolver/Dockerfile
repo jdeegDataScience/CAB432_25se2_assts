@@ -18,6 +18,6 @@ RUN npm ci --only=production
 COPY . .
 
 # Start the app
-CMD ["node", "app.js"]
+CMD ["node", "./bin/www"]
 
 EXPOSE 3000
