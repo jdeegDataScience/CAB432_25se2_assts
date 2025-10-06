@@ -1,6 +1,6 @@
 module.exports = function(req, res, next) {
     console.log("\nGetting user ID...");
-    req.db.from("users").select(`userId`)
+    req.db.from("users").select(`id`)
     .where({email: req.user.email})
     .then((rows) => {
         req.user.id = rows[0].id;

@@ -9,11 +9,8 @@ const jwtIdVerifier = CognitoJwtVerifier.create({
 
 module.exports = async function(req, res, next) {
     try {
-        console.log("\nVerifying token...");
+        console.log("\nVerifying token...\n");
         const decoded = await jwtIdVerifier.verify(req.token);
-        console.log("Token verified. User email:", decoded.email);
-        console.log("User groups:", decoded["cognito:groups"]);
-        console.log("Token iat:", decoded.iat);
         /* standardised reference for user email between middlewares */
         req.user = {};   
         req.user.email = decoded.email;
