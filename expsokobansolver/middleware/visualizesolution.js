@@ -29,7 +29,6 @@ module.exports = async function renderSolution(req, res, next) {
         // Prepare S3 upload params
         const params = { 
             Bucket: process.env.S3_BUCKET,
-            ACL: 'authenticated-read',
             Metadata: { 
                 warehouse: wh, 
                 userId: req.user.id 

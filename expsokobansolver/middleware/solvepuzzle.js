@@ -46,7 +46,6 @@ module.exports = async function (req, res, next) {
         // params for uploading solution JSON to S3
         const params = {
             Bucket: process.env.S3_BUCKET,
-            ACL: 'authenticated-read',
             Metadata: {
                 warehouse: baseName,
                 userId: req.user.id

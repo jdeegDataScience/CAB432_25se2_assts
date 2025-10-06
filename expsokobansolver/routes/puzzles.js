@@ -11,7 +11,6 @@ const upload = multer({ // files saved here
     storage: multerS3({
         s3,
         bucket: process.env.S3_BUCKET,
-        acl: 'authenticated-read',
         metadata: function (req, file, cb) {
             cb(null, {
                 warehouse: file.originalname.split(".")[0],
