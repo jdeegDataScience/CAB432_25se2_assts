@@ -37,6 +37,7 @@ router.post('/login', userExists, function(req, res, next) {
     }
     next();
     }, invalidatetoken, async function(req, res) {
+        console.log("Req.body:", req.body);
         const { username, password, mfaCode, session } = req.body;
         try {
             // Step 1: If MFA code not yet provided → initiate auth
@@ -63,7 +64,7 @@ router.post('/login', userExists, function(req, res, next) {
             // Get authentication tokens from MFA challenge response
             const authChallengeCommand = new RespondToAuthChallengeCommand({
                 ClientId: process.env.APP_CLIENT_ID,
-                ChallengeName: "SMS_MFA", // used for both SMS and email OTP in Cognito
+                ChallengeName: "EMAIL_MFA", // email OTP in Cognito
                 Session: session,
                 ChallengeResponses: {
                     USERNAME: username,
