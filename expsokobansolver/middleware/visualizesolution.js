@@ -15,6 +15,9 @@ module.exports = async function renderSolution(req, res, next) {
     }
     const { cost, solution, whId, whPath, wh } = req.puzzle; // solution as array of strings
     
+    console.log("Solution type:", typeof(solution), Array.isArray(solution));
+    console.log("Solution stringified:", JSON.stringify(solution));
+    
     const scriptPath = path.resolve(__dirname, '../py_scripts/vizSokobanSoln.py');
     const tmpGifPath = path.join(os.tmpdir(), `${whId}.gif`);
     // Call Python script with paths
