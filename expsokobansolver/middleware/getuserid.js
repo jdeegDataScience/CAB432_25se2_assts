@@ -3,7 +3,7 @@ module.exports = function(req, res, next) {
     req.db.from("users").select(`userId`)
     .where({email: req.user.email})
     .then((rows) => {
-        req.user.id = rows[0].userId;
+        req.user.id = rows[0].id;
     })
     .then(_ => {
         next();
