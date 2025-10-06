@@ -19,10 +19,11 @@ module.exports = async function renderSolution(req, res, next) {
         const tmpGifPath = path.join(os.tmpdir(), `${whId}.gif`);
         // Call Python script with paths
         const pyViz = spawn('python3', [scriptPath, whPath, JSON.stringify(solution), tmpGifPath]);
+        let pyStdout = '';
         pyViz.stdout.on('data', (data) => {pyStdout += data.toString();});
         pyViz.stderr.on('data', (data) => console.error(data.toString()));
 
-        py.on('close', async (code) => {
+        pyViz.on('close', async (code) => {
             console.log(`Python exited with code ${code}`);
             // Trim whitespace/newlines
             const gifPath = pyStdout.trim();
