@@ -29,6 +29,7 @@ module.exports = async function(req, res, next) {
         });
     } 
     catch (e) {
+        console.log(e.message);
         if (e.name === "TokenExpiredError") {
             res.status(401).json({ error: true, message: `JWT token has expired` });
         } else {
