@@ -1,5 +1,5 @@
 module.exports = function(req, res, next) {
-    console.log("\nGetting user ID...");
+    console.log("\nGetting user ID...\n");
     req.db.from("users").select(`id`)
     .where({email: req.user.email})
     .then((rows) => {

@@ -5,7 +5,7 @@ const multer = require('multer');
 const multerS3 = require('multer-s3')
 const { s3 } = require("../services/aws");
 
-console.log("Puzzles Using S3 bucket:", process.env.S3_BUCKET);
+console.log("\nPuzzles Using S3 bucket:", process.env.S3_BUCKET);
 
 const upload = multer({ // files saved here
     storage: multerS3({
@@ -15,13 +15,13 @@ const upload = multer({ // files saved here
         metadata: function (req, file, cb) {
             cb(null, {
                 warehouse: file.originalname.split(".")[0],
-                userId: req.user.id
+                userId: String(req.user.id)
             });
         },
         key: function (req, file, cb) {
             const ext = file.originalname.split('.').pop();
             const baseName = file.originalname.replace(/\.[^/.]+$/, "");
-            cb(null, `warehouses/${req.user.id}/${baseName}_${Date.now().toString()}.${ext}`);
+            cb(null, `warehouses/${String(req.user.id)}/${baseName}_${Date.now().toString()}.${ext}`);
         }
     }) 
 }); 
