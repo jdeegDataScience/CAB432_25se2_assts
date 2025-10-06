@@ -10,8 +10,8 @@ module.exports = function(req, res, next) {
         .from("users")
         .select('*') 
         .where((builder) => {
-            if (req.body.email) {builder.where("email", `%${req.body.email}%`)};
-            if (req.body.username) {builder.where("username", `%${req.body.username}%`)};
+            if (req.body.email) {builder.whereILike("email", `%${req.body.email}%`)};
+            if (req.body.username) {builder.whereILike("username", `%${req.body.username}%`)};
         })
         .then((users) => {
             if (users.length !== 1) {
