@@ -47,7 +47,7 @@ router.post('/login', userExists, function(req, res, next) {
                     AuthParameters: {
                         USERNAME: username,
                         PASSWORD: password,
-                        SECRET_HASH: secretHash(process.env.APP_CLIENT_ID, process.env.APP_CLIENT_SECRET, username),
+                        SECRET_HASH: secretHash(process.env.APP_CLIENT_ID, process.env.APP_CLIENT_SECRET, username)
                     }
                 });
 
@@ -68,6 +68,7 @@ router.post('/login', userExists, function(req, res, next) {
                 ChallengeResponses: {
                     USERNAME: username,
                     SMS_MFA_CODE: mfaCode,
+                    SECRET_HASH: secretHash(process.env.APP_CLIENT_ID, process.env.APP_CLIENT_SECRET, username)
                 }
             });
 
