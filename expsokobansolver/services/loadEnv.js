@@ -8,8 +8,7 @@ module.exports = async function loadEnv() {
     const secretCommand = new GetSecretValueCommand({ SecretId: "n11022639-asst2" });
     const secretResponse = await secrets.send(secretCommand);
     const secretsParsed = JSON.parse(secretResponse.SecretString);
-    console.log("Secrets: ", Object.keys(secretsParsed));
-    
+
     // load parameters from SSM Parameter Store
     const getBucketNameCommand = new GetParameterCommand({ Name: "/n11022639/asst2/bucket_name" });
     const getBucketNameResponse = await ssm.send(getBucketNameCommand);
@@ -17,7 +16,6 @@ module.exports = async function loadEnv() {
     const getPortResponse = await ssm.send(getPortCommand);
     const getDBClientCommand = new GetParameterCommand({ Name: "/n11022639/asst2/dbclient" });
     const getDBClientResponse = await ssm.send(getDBClientCommand);
-    console.log("PG_PASSWORD: ", secretsParsed.PG_PASSWORD);
     
     process.env.PORT = getPortResponse.Parameter.Value;
     process.env.S3_BUCKET = getBucketNameResponse.Parameter.Value;

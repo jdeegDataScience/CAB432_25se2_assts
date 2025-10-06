@@ -105,7 +105,7 @@ router.post('/register', userExists, async function(req, res) {
                 Password: password,
                 UserAttributes: [{ Name: "email", Value: email }],
             });
-            const cognitoRes = await client.send(command);
+            const cognitoRes = await cognito.send(command);
             console.log(cognitoRes);
             req.db.from("users").insert({ email, hash, username })
             .then(() => {
