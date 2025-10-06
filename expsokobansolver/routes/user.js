@@ -36,7 +36,7 @@ router.post('/login', userExists, function(req, res, next) {
         return;
     }
     next();
-    }, invalidatetoken, async function(req, res) {
+    }, invalidatetoken, async function(req, res, next) {
         console.log("Req.body:", req.body);
         const { username, password, mfaCode, session } = req.body;
         try {
@@ -162,7 +162,7 @@ router.post('/refresh',
             return; 
         }
         next();
-    }, invalidatetoken, async function(req, res) {
+    }, invalidatetoken, async function(req, res, next) {
         try {
             // 2. Get new tokens from Cognito using the refresh token
             const command = new GetTokensFromRefreshTokenCommand({
