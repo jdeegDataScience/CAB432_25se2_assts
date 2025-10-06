@@ -48,9 +48,9 @@ module.exports = async function (req, res, next) {
             Bucket: process.env.S3_BUCKET,
             Metadata: {
                 warehouse: baseName,
-                userId: req.user.id
+                userId: String(req.user.id)
             },
-            Key: `solutions/${req.user.id}/${puzzleId}.json`,
+            Key: `solutions/${String(req.user.id)}/${puzzleId}.json`,
             Body: JSON.stringify({ moves: puzzleRes.solution }, null, 2),
             ContentType: "application/json"
         };

@@ -31,9 +31,9 @@ module.exports = async function renderSolution(req, res, next) {
             Bucket: process.env.S3_BUCKET,
             Metadata: { 
                 warehouse: wh, 
-                userId: req.user.id 
+                userId: String(req.user.id) 
             },
-            Key: `gifs/${req.user.id}/${whId}.gif`,
+            Key: `gifs/${String(req.user.id)}/${whId}.gif`,
             ContentType: 'image/gif',
             Body: fs.createReadStream(result.solutionGIF) // stream the GIF file
         };

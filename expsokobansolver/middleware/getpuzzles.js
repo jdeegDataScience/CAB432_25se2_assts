@@ -6,7 +6,7 @@ module.exports = async function(req, res, next) {
     const selectCols = [
         'puzzleId', 'userId', 'name', 'cost', 'ts'
     ];
-    const cacheKey = (req.user.groups.includes("admins")) ? "admin" : req.user.id;
+    const cacheKey = (req.user.groups.includes("admins")) ? "admin" : String(req.user.id);
 
     // Try to get from cache first
     const cacheRes = await memch.aGet(`puzzles_${cacheKey}`)
