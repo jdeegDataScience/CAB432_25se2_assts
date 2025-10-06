@@ -7,7 +7,8 @@ const {
     SignUpCommand,
     ConfirmSignUpCommand,
     GetTokensFromRefreshTokenCommand,
-    GlobalSignOutCommand
+    GlobalSignOutCommand,
+    RespondToAuthChallengeCommand
 } = require("@aws-sdk/client-cognito-identity-provider");
 const crypto = require("crypto");
 const userExists = require("../middleware/postuserexists");
