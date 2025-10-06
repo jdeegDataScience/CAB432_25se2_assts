@@ -109,7 +109,7 @@ router.post('/register', userExists, async function(req, res) {
             console.log(cognitoRes);
             req.db.from("users").insert({ email, hash, username })
             .then(() => {
-                res.status(201).json({message: "User created"});
+                res.status(201).json({message: "User created, please confirm your email with the code sent."});
             })
             .catch((e) => {
                 res.status(409).json({ error: true, message: e.message });
@@ -125,14 +125,13 @@ router.post('/register', userExists, async function(req, res) {
 /* POST register user; add to db */
 router.post('/confirm', async function(req, res) {
     try {
-        // 1. Check email and code in req.body
-        if (!req.body.email || !req.body.code) {
-            throw new Error(`Request body incomplete, email and SignUp confirmation code are required.`);
+        // 1. Check username and code in req.body
+        if (!req.body.username || !req.body.code) {
+            throw new Error(`Request body incomplete, username and SignUp confirmation code are required.`);
         }
         else {
-            const email = req.body.email;
             const code = req.body.code;
-            const username = req.user.username;
+            const username = req.body.username;
             const hash = secretHash(process.env.APP_CLIENT_ID, process.env.APP_CLIENT_SECRET, username);
             const command = new ConfirmSignUpCommand({
                 ClientId: process.env.APP_CLIENT_ID,
