@@ -11,7 +11,6 @@ const logger = require('morgan');
 const app = express();
 
 const options = require('./knexfile.js');
-console.log(options);
 const knex = require('knex')(options);
 const cors = require('cors');
 

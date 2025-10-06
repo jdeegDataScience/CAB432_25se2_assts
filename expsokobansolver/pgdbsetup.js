@@ -5,6 +5,7 @@ module.exports = async function createDBtables() {
     console.log(options);
     // check if table 'users' exists
     knex.schema.hasTable('users').then(function (exists) {
+        console.log("Users table exists: ", exists);
         if (!exists) {
             // create table 'users'
             // with a primary key using 'increments()'
@@ -19,10 +20,14 @@ module.exports = async function createDBtables() {
                 table.date('dob');
             });
         }
+    }).catch((err) => {
+        console.error('Error during user table create');
+        console.error('Error: ', err.message);
     });
 
     // check if table 'usersBLtokens' exists
     knex.schema.hasTable('usersBLtokens').then(function (exists) {
+        console.log("UsersBLtokens table exists: ", exists);
         if (!exists) {
             // create table 'usersBLtokens'
             // with a primary key using 'email'
@@ -32,10 +37,14 @@ module.exports = async function createDBtables() {
                 table.string('BLfrom').notNullable();
             });
         }
+    }).catch((err) => {
+        console.error('Error during userBLtokens table create');
+        console.error('Error: ', err.message);
     });
 
     // check if table 'puzzles' exists
     knex.schema.hasTable('puzzles').then(function (exists) {
+        console.log("Puzzles table exists: ", exists);
         if (!exists) {
             // create table 'puzzles'
             // with a primary key using 'puzzleId'
@@ -48,5 +57,8 @@ module.exports = async function createDBtables() {
                 table.timestamp('ts').defaultTo(knex.fn.now());
             });
         }
+    }).catch((err) => {
+        console.error('Error during puzzles table create');
+        console.error('Error: ', err.message);
     });    
 }

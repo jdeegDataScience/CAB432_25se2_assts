@@ -17,6 +17,7 @@ module.exports = async function loadEnv() {
     const getPortResponse = await ssm.send(getPortCommand);
     const getDBClientCommand = new GetParameterCommand({ Name: "/n11022639/asst2/dbclient" });
     const getDBClientResponse = await ssm.send(getDBClientCommand);
+    console.log("PG_PASSWORD: ", secretsParsed.PG_PASSWORD);
     
     process.env.PORT = getPortResponse.Parameter.Value;
     process.env.S3_BUCKET = getBucketNameResponse.Parameter.Value;
