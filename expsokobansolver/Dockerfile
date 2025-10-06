@@ -2,7 +2,11 @@
 FROM node:22-alpine
 
 # Install Python (example: Python 3.10)
-RUN apk add python3 py3-pip
+RUN apk add python3 py3-pip \
+    jpeg-dev zlib-dev libwebp-dev tiff-dev freetype-dev lcms2-dev openjpeg-dev
+
+# Install Pillow
+RUN pip3 install --no-cache-dir pillow
 
 # Set python3 as default python
 RUN ln -sf /usr/bin/python3 /usr/bin/python
