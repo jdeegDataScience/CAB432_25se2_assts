@@ -15,13 +15,10 @@ module.exports = async function renderSolution(req, res, next) {
         }
         const { cost, solution, whId, whPath, wh } = req.puzzle; // solution as array of strings
         
-        console.log("Solution type:", typeof(solution), Array.isArray(solution));
-        console.log("Solution stringified:", JSON.stringify(solution));
-        
         const scriptPath = path.resolve(__dirname, '../py_scripts/vizSokobanSoln.py');
         const tmpGifPath = path.join(os.tmpdir(), `${whId}.gif`);
         // Call Python script with paths
-        const pyViz = spawn('python3', scriptPath, whPath, JSON.stringify(solution), tmpGifPath);
+        const pyViz = spawn('python3', [scriptPath, whPath, JSON.stringify(solution), tmpGifPath]);
         pyViz.stdout.on('data', (data) => {pyStdout += data.toString();});
         pyViz.stderr.on('data', (data) => console.error(data.toString()));
 
