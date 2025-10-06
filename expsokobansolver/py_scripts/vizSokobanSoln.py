@@ -73,11 +73,11 @@ def move_worker(warehouse, direction):
 
 def main():
     if len(sys.argv) < 4:
-        print(json.dumps({"error":"Usage: viz_sokoban_refactored.py PUZZLE_FILE SOLUTION_JSON"}))
+        print(json.dumps({"error":"Usage: viz_sokoban_refactored.py PUZZLE_FILE SOLUTION_JSON"}), file=sys.stderr)
         sys.exit(1)
 
     puzzle_path = sys.argv[1]
-    print("DEBUG sys.argv[2]:", sys.argv[2])
+    print("DEBUG sys.argv[2]:", sys.argv[2], file=sys.stderr)
     solution = json.loads(sys.argv[2])
     outpath = sys.argv[3]
 
@@ -100,7 +100,7 @@ def main():
         duration=350,  # ms per frame
         loop=0
     )
-    print(json.dumps({"solutionGIF": outpath}))
+    print(outpath)
 
 if __name__ == "__main__":
     main()
