@@ -22,7 +22,7 @@ module.exports = async function(req, res, next) {
         const rows = await req.db.from("puzzles").select(selectCols)
         .where((builder) => {
             // If NOT admin, filter by userId
-            if (!req.user.groups.includes("admins")) {builder.where("userId", parseInt(req.user.id));};
+            if (!req.user.groups.includes("admins")) {builder.where("userid", parseInt(req.user.id));};
         }).orderBy('ts')
         .catch((err) => { 
             console.log(err);

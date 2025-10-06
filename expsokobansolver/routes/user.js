@@ -205,7 +205,7 @@ router.post('/logout',
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-    req.db.from("users").select('userId', 'email')
+    req.db.from("users").select('id', 'email')
     .then((rows) => { 
         res.status(200).json({ Error: false, Message: "Success", Users: rows }); 
     });

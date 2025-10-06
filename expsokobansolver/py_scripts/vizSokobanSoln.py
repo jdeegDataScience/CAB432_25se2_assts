@@ -77,7 +77,7 @@ def main():
         sys.exit(1)
 
     puzzle_path = sys.argv[1]
-    print("DEBUG sys.argv[2]:", sys.argv[2], file=sys.stderr)
+    # print("DEBUG sys.argv[2]:", sys.argv[2], file=sys.stderr)
     solution = json.loads(sys.argv[2])
     outpath = sys.argv[3]
 
