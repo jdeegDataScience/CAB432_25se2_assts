@@ -64,11 +64,11 @@ router.post('/login', userExists, function(req, res, next) {
             // Get authentication tokens from MFA challenge response
             const authChallengeCommand = new RespondToAuthChallengeCommand({
                 ClientId: process.env.APP_CLIENT_ID,
-                ChallengeName: "EMAIL_MFA", // email OTP in Cognito
+                ChallengeName: "EMAIL_OTP", // email OTP in Cognito
                 Session: session,
                 ChallengeResponses: {
                     USERNAME: username,
-                    EMAIL_MFA_CODE: mfaCode,
+                    EMAIL_OTP_CODE: mfaCode,
                     SECRET_HASH: secretHash(process.env.APP_CLIENT_ID, process.env.APP_CLIENT_SECRET, username)
                 }
             });
