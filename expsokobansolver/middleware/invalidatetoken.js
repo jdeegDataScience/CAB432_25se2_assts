@@ -3,7 +3,7 @@ module.exports = function(req, res, next) {
     req.db("usersbltokens")
     .insert({email: req.user.email, BLfrom: `${BLtime}`})
     .onConflict('email')
-    .merge('BLfrom')
+    .merge({BLfrom: BLtime})
     .then(_ => {
         next();
     });
