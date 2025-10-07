@@ -9,7 +9,15 @@ module.exports = async function(req, res, next) {
         if (!req.body.puzzle || !req.body.target) {
             throw new Error('Missing puzzle id or download target in request');
         }
-        const ext = req.body.target === 'gifs' ? 'gif' : 'txt';
+        let ext = '';
+        switch (req.body.target) {
+            case 'warehouses': ext = 'txt';
+                break;
+            case 'solutions': ext = 'json';
+                break;
+            case 'gifs': ext = 'gif';
+                break;
+        }
         const objectKey = `${req.body.target}s/${String(userId)}/${req.body.puzzle}.${ext}`;
         const command = new GetObjectCommand({
                 Bucket: process.env.S3_BUCKET,
