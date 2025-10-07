@@ -1,6 +1,8 @@
 module.exports = function(req, res, next) {
     const BLtime = Math.floor(Date.now() / 1000);
     const userEmail = req.user?.email ? req.user.email : req.body.email;
+    console.log('\nBL Tokens for user:');
+    console.log(userEmail);
     req.db("usersbltokens")
     .insert({email: userEmail, blfrom: `${BLtime}`})
     .onConflict('email')

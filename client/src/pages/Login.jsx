@@ -49,7 +49,7 @@ export default function Login() {
                 if (res.ok) { 
                     res.json().then((res) => {
                         console.log(res);
-                        setInputs(values => ({...values, "session": res.session}))
+                        setInputs(values => ({...values, "session": res.session, "email": res.email}));
                         setMfaForm(true);
                         setUserLoginInit(true);
                         setError(null);
