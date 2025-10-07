@@ -34,7 +34,7 @@ module.exports = async function(req, res, next) {
             .where((builder) => {
                 // If NOT admin, filter by userId
                 if (!req.user.groups.includes("admins")) {builder.where("userid", parseInt(req.user.id));};
-            }).orderBy('ts').desc();
+            }).orderBy('ts', 'desc');
 
             // Store in cache for next time
             await memch.aSet(`puzzles_${cacheKey}`, JSON.stringify(rows), 60);
