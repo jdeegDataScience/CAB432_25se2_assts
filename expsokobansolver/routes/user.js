@@ -38,6 +38,7 @@ router.post('/login', userExists, function(req, res, next) {
     next();
     }, invalidatetoken, async function(req, res, next) {
         const { username, password, mfaCode, session } = req.body;
+        console.log("User: ", req?.user);
         try {
             // Step 1: If MFA code not yet provided → initiate auth
             if (!mfaCode) {
@@ -57,7 +58,7 @@ router.post('/login', userExists, function(req, res, next) {
                 return res.status(200).json({
                     message: "MFA required. Enter the code sent to your email.",
                     session: initAuthRes.Session,
-                    email: req.user.email
+                    email: req.user?.email ? req.user?.email : "noEmailFieldInUserObj"
                 });
             }
             // Step 2: If MFA code provided → respond to auth challenge
