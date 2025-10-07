@@ -18,11 +18,11 @@ module.exports = async function(req, res, next) {
             case 'gifs': ext = 'gif';
                 break;
         }
-        const objectKey = `${req.query.target}/${String(userId)}/${req.query.puzzle}.${ext}`;
+        const objectKey = `${req.query.target}/${String(userId)}/${req.query.puzzleId}.${ext}`;
         const command = new GetObjectCommand({
                 Bucket: process.env.S3_BUCKET,
                 Key: objectKey,
-                ResponseContentDisposition: `attachment; filename="${req.query.puzzle}.${ext}"`,
+                ResponseContentDisposition: `attachment; filename="${req.query.puzzleId}.${ext}"`,
             });
         const presignedURL = await getSignedUrl(s3, command, {expiresIn: 3600} );
         res.json({ downloadURL: presignedURL });        
