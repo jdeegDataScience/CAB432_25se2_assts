@@ -3,13 +3,14 @@ const { s3 } = require("../services/aws");
 const { GetObjectCommand } = require("@aws-sdk/client-s3");
 
 module.exports = async function(req, res, next) {
+    const userId = req.body?.userId ? req.body.userId : req.user.id;
     // 1. Check all info in req
     try {
         if (!req.body.puzzle || !req.body.target) {
             throw new Error('Missing puzzle id or download target in request');
         }
         const ext = req.body.target === 'gifs' ? 'gif' : 'txt';
-        const objectKey = `${req.body.target}s/${String(req.user.id)}/${req.body.puzzle}.${ext}`;
+        const objectKey = `${req.body.target}s/${String(userId)}/${req.body.puzzle}.${ext}`;
         const command = new GetObjectCommand({
                 Bucket: process.env.S3_BUCKET,
                 Key: objectKey,
