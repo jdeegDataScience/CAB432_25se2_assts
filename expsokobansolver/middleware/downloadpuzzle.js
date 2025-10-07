@@ -18,7 +18,7 @@ module.exports = async function(req, res, next) {
             case 'gifs': ext = 'gif';
                 break;
         }
-        const objectKey = `${req.body.target}s/${String(userId)}/${req.body.puzzle}.${ext}`;
+        const objectKey = `${req.body.target}/${String(userId)}/${req.body.puzzle}.${ext}`;
         const command = new GetObjectCommand({
                 Bucket: process.env.S3_BUCKET,
                 Key: objectKey,
