@@ -38,6 +38,7 @@ router.post('/login', userExists, function(req, res, next) {
     next();
     }, invalidatetoken, async function(req, res, next) {
         const { username, password, mfaCode, session } = req.body;
+        console.log("Req.body: ", req?.body);
         console.log("User: ", req?.user);
         try {
             // Step 1: If MFA code not yet provided → initiate auth

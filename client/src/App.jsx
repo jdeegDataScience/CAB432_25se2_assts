@@ -17,13 +17,13 @@ import ErrorAlert from "./components/ErrorAlert";
 import Footer from './components/Footer';
 
 /*  Hooks */
-import useRefreshToken from './hooks/useRefreshToken';
+// import useRefreshToken from './hooks/useRefreshToken';
 
 
 function App() {
     localStorage.setItem("API_URL", `http://api.sokobansolver.cab432.com`);
     const [authenticated, setAuthenticated] = useState(false);
-    const [ isTokensRefreshed, loading, refreshError ] = useRefreshToken();
+    // const [ isTokensRefreshed, loading, refreshError ] = useRefreshToken();
     const [error, setError] = useState();
     
 
@@ -37,16 +37,16 @@ function App() {
         }
     }
 
-    useEffect(() => {
-        if (refreshError) {
-            setError(refreshError);
-            changeAuthenticated(false);  
-        }
-        else if (isTokensRefreshed) {
-            changeAuthenticated(true);
-            setError(null);
-        }
-    }, [loading]);
+    // useEffect(() => {
+    //     if (refreshError) {
+    //         setError(refreshError);
+    //         changeAuthenticated(false);  
+    //     }
+    //     else if (isTokensRefreshed) {
+    //         changeAuthenticated(true);
+    //         setError(null);
+    //     }
+    // }, [loading]);
 
     return (
         <AuthContext.Provider value={[authenticated, changeAuthenticated]}>

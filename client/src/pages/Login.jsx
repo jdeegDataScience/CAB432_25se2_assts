@@ -79,6 +79,7 @@ export default function Login() {
 
     const loginMfa = (event) => {
         event.preventDefault();
+        console.log(inputs);
 
         return fetch(url, {
             method: "POST",
