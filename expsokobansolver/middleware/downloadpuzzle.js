@@ -6,7 +6,7 @@ module.exports = async function(req, res, next) {
     const userId = req.query?.userId ? req.query.userId : req.user.id;
     // 1. Check all info in req
     try {
-        if (!req.query.puzzle || !req.query.target) {
+        if (!req.query.puzzleId || !req.query.target) {
             throw new Error('Missing puzzle id or download target in request');
         }
         let ext = '';

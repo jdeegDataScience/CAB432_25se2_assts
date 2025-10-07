@@ -1,5 +1,7 @@
 import { useState, createContext } from "react";
 import { AgGridReact } from "ag-grid-react";
+import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
+ModuleRegistry.registerModules([ AllCommunityModule ]);
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
 
@@ -17,8 +19,8 @@ export default function PuzzlesTable() {
     const [ selectedRow, setSelectedRow ] = useState('');
     const [ error, setError ] = useState(null);
     const columns= [
-        {field: "id", valueGetter: "node.data.id", hide: true},
-        {field: "userId", valueGetter: "node.data.userId", hide: true}, // width: "110px"},
+        {field: "id",  hide: true}, // valueGetter: "node.data.id",
+        {field: "userId",  hide: true}, // width: "110px"},valueGetter: "node.data.userId",
         {field: "name", flex: 2} ,
         {field: "cost", flex: 1},
         {field: "uploaded", flex: 1}
@@ -70,16 +72,15 @@ export default function PuzzlesTable() {
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${localStorage.bearerToken}`
-                    },
-                    body: JSON.stringify({page: currPage})
+                    }
                 })
                 .then((res) => res.json())
                 .then((results) => {
                     thisTotalPuzzles = results.pagination.total;
                     
                     return (results.data.map((puzzle) => ({
-                        id: puzzle.puzzleid,
-                        userId: puzzle.userid,
+                        id: puzzle.id,
+                        userId: puzzle.user,
                         name: puzzle.name,
                         cost: puzzle.cost,
                         uploaded: puzzle.ts

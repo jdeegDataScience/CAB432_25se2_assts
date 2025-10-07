@@ -1,8 +1,8 @@
 import { useState } from "react";
 
-export default function SearchBar() {
+export default function SolvePuzzleBar() {
     const base_url = `${localStorage.API_URL}/puzzles/solve`;
-    const [file, setFile] = useState<File | null>(null);
+    const [file, setFile] = useState(null);
     const [isFileUploaded, setIsFileUploaded] = useState(false);
 
     const handleFileInput = (e) => {
@@ -22,7 +22,7 @@ export default function SearchBar() {
                 const response = await fetch(base_url, {
                     method: "POST",
                     headers: {
-                        "Content-Type": "multipart/form-data",
+                        // "Content-Type": "multipart/form-data",
                         "Authorization": `Bearer ${localStorage.bearerToken}`
                     },
                     body: formData
@@ -53,7 +53,7 @@ export default function SearchBar() {
                 {
                     isFileUploaded ? <button  type="button" onClick={handleClick}>
                     Solve & Save</button> : 
-                    <button id="puzzle-button" type="button" disabled="true">
+                    <button id="puzzle-button" type="button" disabled={true}>
                         Waiting for upload!</button>
                 }            
                 </div>            

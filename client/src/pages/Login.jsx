@@ -53,7 +53,7 @@ export default function Login() {
                         setMfaForm(true);
                         setUserLoginInit(true);
                         setError(null);
-                    })
+                    });
                 }
                 else if (res.status === 400) {
                     throw new Error("Login failed, username and password are required.")
@@ -100,8 +100,7 @@ export default function Login() {
                         setError(null);
                         setMfaForm(false);
                         setUserLoginInit(false);
-                        navigate(-1);
-                    })
+                    }).then((_) => {navigate("/puzzles", { replace: true });});
                 } else {
                     throw new Error(res?.message || "Login failed unexpectedly.")
                 }
