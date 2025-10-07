@@ -36,5 +36,5 @@ module.exports = async function loadEnv() {
     process.env.USER_POOL_ID = secretsParsed.USER_POOL_ID;
     process.env.APP_CLIENT_ID = secretsParsed.APP_CLIENT_ID;
     process.env.APP_CLIENT_SECRET = secretsParsed.APP_CLIENT_SECRET;
-    console.log("Secrets and parameters loaded");
+    console.log("\nEnv secrets and params loaded.");
 }

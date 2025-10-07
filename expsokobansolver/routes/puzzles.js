@@ -5,8 +5,6 @@ const multer = require('multer');
 const multerS3 = require('multer-s3')
 const { s3 } = require("../services/aws");
 
-console.log("\nPuzzles Using S3 bucket:", process.env.S3_BUCKET);
-
 const upload = multer({ // files saved here
     storage: multerS3({
         s3,

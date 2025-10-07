@@ -32,30 +32,11 @@ app.use((req, res, next) => {
 
 // app.use('/docs', swaggerUI.serve);
 // app.get('/docs', swaggerUI.setup(swaggerDocument));
+
 const indexRouter = require('./routes/index');
 const userRouter = require('./routes/user');
 app.use('/', indexRouter);
 app.use('/user', userRouter);
-
-app.get('/events', (req, res) => {
-    console.log('Got /events');
-    const userId = req.user.id; // from auth middleware (e.g. JWT, session)
-    res.set({
-      'Cache-Control': 'no-cache',
-      'Content-Type': 'text/event-stream',
-      'Connection': 'keep-alive'
-    });
-    res.flushHeaders();
-  // Tell the client to retry every 10 seconds if connectivity is lost
-    res.write('retry: 10000\n\n');
-    if (!clients[userId]) clients[userId] = [];
-    clients[userId].push(res);
-
-    req.on('close', () => {
-        clients[userId] = clients[userId].filter(r => r !== res);
-        if (clients[userId].length === 0) delete clients[userId];
-    });
-});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -9,7 +9,7 @@ const { s3 } = require("../services/aws");
 
 module.exports = async function renderSolution(req, res, next) {
     try {
-        console.log('\nIn visualizesolution middleware\n');
+        console.log('\nCreating GIF of puzzle solution...');
         if (!req.puzzle) {
             return res.status(400).json({ error: true, message: 'Missing puzzle data from previous step' });
         }
@@ -24,7 +24,7 @@ module.exports = async function renderSolution(req, res, next) {
         pyViz.stderr.on('data', (data) => console.error(data.toString()));
 
         pyViz.on('close', async (code) => {
-            console.log(`Python exited with code ${code}`);
+            // console.log(`Python exited with code ${code}`);
             // Trim whitespace/newlines
             const gifPath = pyStdout.trim();
 
@@ -46,7 +46,7 @@ module.exports = async function renderSolution(req, res, next) {
             next();
         });
     } catch (err) {
-        console.error('Error in visualizesolution middleware:', err);
+        console.error('\nError in visualizesolution middleware:', err);
         return res.status(500).json({ error: true, message: err.message });
     }
 };

@@ -9,14 +9,12 @@ const { s3 } = require("../services/aws");
 
 module.exports = async function (req, res, next) {
     try {
-        console.log('\nIn solvepuzzle middleware\n');
+        console.log('\nSolving puzzle...');
         const puzzleId = req.file.key.split("/").pop().split(".")[0]; // destination file name
         const baseName = req.file.originalname.split(".")[0]; // original file name
 
         // Download the S3 file to a local temporary path
-        
         const tmpFilePath = path.join(os.tmpdir(), `${Date.now()}_${req.file.originalname}`);
-        console.log('Temporary local file path:', tmpFilePath);
 
         const getObjCmd = new GetObjectCommand({
             Bucket: req.file.bucket,

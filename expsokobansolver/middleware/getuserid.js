@@ -1,5 +1,5 @@
 module.exports = function(req, res, next) {
-    console.log("\nGetting user ID...\n");
+    console.log("\nGetting user ID...");
     req.db.from("users").select(`id`)
     .where({email: req.user.email})
     .then((rows) => {
@@ -9,7 +9,7 @@ module.exports = function(req, res, next) {
         next();
     })
     .catch((err) => { 
-        console.log(err);
+        console.log('\n', err);
         res.json({Error: true, Message: "Error in MySQL query" });
         return;
     });

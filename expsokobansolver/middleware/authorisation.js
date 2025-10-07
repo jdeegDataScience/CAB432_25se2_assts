@@ -9,7 +9,7 @@ const jwtIdVerifier = CognitoJwtVerifier.create({
 
 module.exports = async function(req, res, next) {
     try {
-        console.log("\nVerifying token...\n");
+        console.log("\nVerifying token...");
         const decoded = await jwtIdVerifier.verify(req.token);
         /* standardised reference for user email between middlewares */
         req.user = {};   

@@ -20,8 +20,8 @@ module.exports = async function(req, res, next) {
         // Try to get from cache first
         const cacheRes = await memch.aGet(`puzzles_${cacheKey}`);
 
-        console.log(`Cache lookup for puzzles_${cacheKey}`);
-        console.log("Cache result:", cacheRes);
+        console.log(`\nCache lookup for puzzles_${cacheKey}`);
+        console.log("result length:", cacheRes?.length);
 
         if (cacheRes) {
             console.log(`Cache hit for puzzles_${cacheKey}`);
