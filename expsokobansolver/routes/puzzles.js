@@ -54,8 +54,8 @@ router.get('/', getpuzzles, function(req, res, next) {
 
     const currPagePuzzles = req.puzzles.slice(pageStart, pageEnd);
     Promise.resolve(currPagePuzzles.map((puzzle) => ({
-        id: puzzle.puzzleId,
-        user: puzzle.userId,
+        id: puzzle.puzzleid,
+        user: puzzle.userid,
         name: puzzle.name,
         cost: puzzle.cost,
         ts: puzzle.ts
