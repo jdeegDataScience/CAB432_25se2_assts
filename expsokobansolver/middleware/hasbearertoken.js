@@ -5,7 +5,7 @@ module.exports = function(req, res, next) {
     }
     else {
         /* standardised reference for token between middlewares */
-        console.log("\nToken found");
+        console.log("\nToken found\n");
         req.token = hasToken.substring(7);
         next();
     };

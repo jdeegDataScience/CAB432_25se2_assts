@@ -37,7 +37,6 @@ router.post('/login', userExists, function(req, res, next) {
     }
     next();
     }, invalidatetoken, async function(req, res, next) {
-        console.log("Req.body:", req.body);
         const { username, password, mfaCode, session } = req.body;
         try {
             // Step 1: If MFA code not yet provided → initiate auth
@@ -75,7 +74,6 @@ router.post('/login', userExists, function(req, res, next) {
 
             const authChallengeRes = await cognito.send(authChallengeCommand);
 
-            console.log(authChallengeRes.AuthenticationResult);
             req.AuthRes = authChallengeRes.AuthenticationResult;
             next();
         } catch (e) {
@@ -109,7 +107,7 @@ router.post('/register', userExists, async function(req, res) {
                 UserAttributes: [{ Name: "email", Value: email }],
             });
             const cognitoRes = await cognito.send(command);
-            console.log(cognitoRes);
+
             req.db.from("users").insert({ email, hash, username })
             .then(() => {
                 res.status(201).json({message: "User created, please confirm your email with the code sent."});
@@ -143,7 +141,7 @@ router.post('/confirm', async function(req, res) {
                 ConfirmationCode: code
             });
             const cognitoRes = await cognito.send(command);
-            console.log(cognitoRes);
+            
             res.status(200).json({ message: "User confirmed" });
         };
     } catch (e) {

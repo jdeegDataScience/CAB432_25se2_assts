@@ -16,34 +16,33 @@ module.exports = async function(req, res, next) {
         'puzzleid', 'userid', 'name', 'cost', 'ts'
     ];
     const cacheKey = (req.user.groups.includes("admins")) ? "admin" : String(req.user.id);
+    try {
+        // Try to get from cache first
+        const cacheRes = await memch.aGet(`puzzles_${cacheKey}`);
 
-    // Try to get from cache first
-    const cacheRes = await memch.aGet(`puzzles_${cacheKey}`)
-    .catch((err) => { 
-        console.log("Memcached get error: ", err);
-    });
-    if (cacheRes) {
-        console.log("Cache hit for puzzles");
-        req.puzzles = JSON.parse(cacheRes);
-        return next();
-    }
-    else {
-        const rows = await req.db.from("puzzles").select(selectCols)
-        .where((builder) => {
-            // If NOT admin, filter by userId
-            if (!req.user.groups.includes("admins")) {builder.where("userid", parseInt(req.user.id));};
-        }).orderBy('ts')
-        .catch((err) => { 
-            console.log(err);
-            res.json({Error: true, Message: "Error in MySQL query" });
-            return;
-        });
-        // Store in cache for next time
-        await memch.aSet(`puzzles_${cacheKey}`, JSON.stringify(rows), 60)
-        .catch((err) => {
-            console.log("Memcached set error: ", err);
-        });
-        req.puzzles = rows;
-        next();
+        console.log(`Cache lookup for puzzles_${cacheKey}`);
+        console.log("Cache result:", cacheRes);
+
+        if (cacheRes) {
+            console.log(`Cache hit for puzzles_${cacheKey}`);
+            req.puzzles = JSON.parse(cacheRes);
+            return next();
+        }
+        else {
+            console.log(`Cache miss for puzzles_${cacheKey}`);
+            const rows = await req.db.from("puzzles").select(selectCols)
+            .where((builder) => {
+                // If NOT admin, filter by userId
+                if (!req.user.groups.includes("admins")) {builder.where("userid", parseInt(req.user.id));};
+            }).orderBy('ts').desc();
+
+            // Store in cache for next time
+            await memch.aSet(`puzzles_${cacheKey}`, JSON.stringify(rows), 60);
+            req.puzzles = rows;
+            return next();
+        };
+    } catch (err) {
+        console.log(err);
+        return res.json({Error: true, Message: err.message});
     };
 };
