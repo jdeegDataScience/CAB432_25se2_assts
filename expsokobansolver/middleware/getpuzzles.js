@@ -1,10 +1,19 @@
 require('dotenv').config();
-const { memch } = require("../services/aws");
+const util = require("node:util");
+const Memcached = require("memcached");
+const memch = new Memcached(process.env.MEMCACHE);
+memch.on("failure", (details) => {
+    console.log("Memcached server failure: ", details);
+});
+// Monkey patch some functions for convenience
+// can call these with async
+memch.aGet = util.promisify(memch.get);
+memch.aSet = util.promisify(memch.set);
 
 /* GET movies search results. */
 module.exports = async function(req, res, next) {
     const selectCols = [
-        'puzzleId', 'userId', 'name', 'cost', 'ts'
+        'puzzleid', 'userid', 'name', 'cost', 'ts'
     ];
     const cacheKey = (req.user.groups.includes("admins")) ? "admin" : String(req.user.id);
 
@@ -30,7 +39,7 @@ module.exports = async function(req, res, next) {
             return;
         });
         // Store in cache for next time
-        await memch.aSet(`puzzles_${cacheKey}`, JSON.stringify(rows), 300)
+        await memch.aSet(`puzzles_${cacheKey}`, JSON.stringify(rows), 60)
         .catch((err) => {
             console.log("Memcached set error: ", err);
         });

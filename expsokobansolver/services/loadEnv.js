@@ -16,10 +16,16 @@ module.exports = async function loadEnv() {
     const getPortResponse = await ssm.send(getPortCommand);
     const getDBClientCommand = new GetParameterCommand({ Name: "/n11022639/asst2/dbclient" });
     const getDBClientResponse = await ssm.send(getDBClientCommand);
+    const getMemcacheCommand = new GetParameterCommand({ Name: "/n11022639/asst2/memcache" });
+    const getMemcacheResponse = await ssm.send(getMemcacheCommand);
     
+    // load parameters to process.env
     process.env.PORT = getPortResponse.Parameter.Value;
     process.env.S3_BUCKET = getBucketNameResponse.Parameter.Value;
     process.env.DB_CLIENT = getDBClientResponse.Parameter.Value; // e.g. 'pg'
+    process.env.MEMCACHE = getMemcacheResponse.Parameter.Value; // memcache endpoint
+
+    // load secrets from Secrets Manager
     process.env.DB_USER = secretsParsed.PG_USER;
     process.env.DB_PASSWORD = secretsParsed.PG_PASSWORD;
     process.env.DB_HOST = secretsParsed.PG_HOST;
