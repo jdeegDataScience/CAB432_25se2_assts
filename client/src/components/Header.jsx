@@ -1,5 +1,5 @@
-import { Link, useNavigate } from "react-router-dom";
-import React, { useState, useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useState, useContext, useEffect } from "react";
 
 // import context provider
 import { AuthContext } from '../App';
@@ -15,14 +15,15 @@ export default function Header() {
     );
  
     const Logout = () => {
-        const currToken = localStorage.getItem("refreshToken");
+        const currToken = localStorage.getItem("accessToken");
+        const currEmail = localStorage.getItem("userEmail");
         fetch(url, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json" ,
                 "accept": "application/json"
             },
-            body: JSON.stringify({ refreshToken: currToken }),
+            body: JSON.stringify({ accessToken: currToken, email: currEmail }),
         })
         .finally(() => {
             setAuthenticated(false);
@@ -35,7 +36,7 @@ export default function Header() {
                 <li><Link to="/">Home</Link></li>
 				{
                     authenticated ? 
-                    <li><Link to="/videos">Videos</Link></li>
+                    <li><Link to="/puzzles">Puzzles</Link></li>
                     : null
                 }
             </ul>
@@ -49,6 +50,10 @@ export default function Header() {
                     authenticated ? 
                     <li><button type="button" onClick={Logout}>Logout</button></li> 
                     : <li><Link to="/login">Login</Link></li>
+                }
+                {
+                    authenticated ? 
+                    null : <li><Link to="/register">Register</Link></li>
                 }
             </ul>
         </nav>

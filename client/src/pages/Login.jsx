@@ -48,7 +48,8 @@ export default function Login() {
             .then(res => {
                 if (res.ok) { 
                     res.json().then((res) => {
-                        setInputs(values => ({...values, [session]: res.session}))
+                        console.log(res);
+                        setInputs(values => ({...values, "session": res.session}))
                         setMfaForm(true);
                         setUserLoginInit(true);
                         setError(null);
@@ -115,7 +116,7 @@ export default function Login() {
 
     return (
         <div className="container authenticate">
-            <div className="text">{ mfaForm ? "Register":"Log In"}</div>
+            <div className="text">{ mfaForm ? "Submit Code":"Log In"}</div>
             <div className="underline"></div>
             <ErrorAlert errorState={error} dismissError={() => {setError(null);}} />
             <form onSubmit={ mfaForm ? loginMfa : loginInit } >
@@ -126,7 +127,7 @@ export default function Login() {
                     </div> : null
                 }
                 {
-                    userLoginInit && mfaForm ? 
+                    !userLoginInit && !mfaForm ? 
                     <div className="inputs">
                         <div className="input">
                             <label htmlFor="username">Username:</label>

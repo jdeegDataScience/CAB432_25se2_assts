@@ -56,7 +56,8 @@ router.post('/login', userExists, function(req, res, next) {
                 // MFA challenge will always be returned
                 return res.status(200).json({
                     message: "MFA required. Enter the code sent to your email.",
-                    session: initAuthRes.Session
+                    session: initAuthRes.Session,
+                    email: req.user.email
                 });
             }
             // Step 2: If MFA code provided → respond to auth challenge

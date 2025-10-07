@@ -1,7 +1,7 @@
-import { useState, useEffect, useContext } from "react";
+import { useContext } from "react";
 
 // import context provider
-import { PuzzlesDownloadContext } from '../pages/Puzzles';
+import { PuzzlesDownloadContext } from './PuzzlesTable';
 
 export default function FeaturePuzzle() {
     const [ downloadParams, setDownloadParams ] = useContext(PuzzlesDownloadContext);
