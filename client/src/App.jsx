@@ -5,7 +5,8 @@ import { createContext, useEffect, useState } from 'react';
 /* Pages */
 import Home from "./pages/Home"
 import Login from "./pages/Login";
-import Videos from './pages/Puzzles';
+import Register from "./pages/Register";
+import Puzzles from './pages/Puzzles';
 
 // context for user authentication
 export const AuthContext = createContext();
@@ -20,7 +21,7 @@ import useRefreshToken from './hooks/useRefreshToken';
 
 
 function App() {
-    localStorage.setItem("API_URL", `http://localhost:3000`);
+    localStorage.setItem("API_URL", `http://api.sokobansolver.cab432.com`);
     const [authenticated, setAuthenticated] = useState(false);
     const [ isTokensRefreshed, loading, refreshError ] = useRefreshToken();
     const [error, setError] = useState();
@@ -30,6 +31,7 @@ function App() {
         setAuthenticated(value);
         if (value === false) {
             localStorage.removeItem("bearerToken");
+            localStorage.removeItem("accessToken");
             localStorage.removeItem("refreshToken");
             localStorage.removeItem("userEmail");
         }
@@ -54,8 +56,9 @@ function App() {
                     <ErrorAlert errorState={error} dismissError={() => {setError(null);}} />
                     <Routes>
                         <Route path="/" element={<Home />} />
-                        <Route path="/Videos" element={<Videos />} />
+                        <Route path="/Puzzles" element={<Puzzles />} />
                         <Route path="/Login" element={<Login />} />
+                        <Route path="/Register" element={<Register />} />
                     </Routes>
                     <Footer />
                 </div>
