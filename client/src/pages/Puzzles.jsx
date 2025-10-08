@@ -21,8 +21,8 @@ export default function Puzzles() {
     return (
         <div className="container puzzles" id={authenticated}>
             <ErrorAlert errorState={error} dismissError={() => {setError(null);}} />
-            <SolvePuzzleBar />
-            <PuzzlesTable />
+            { authenticated ? <SolvePuzzleBar /> : null }
+            { authenticated ? <PuzzlesTable /> : null }
         </div>
     )
 }
