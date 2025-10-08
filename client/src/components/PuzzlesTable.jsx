@@ -23,12 +23,13 @@ export default function PuzzlesTable() {
         {field: "userId",  hide: true}, // width: "110px"},valueGetter: "node.data.userId",
         {field: "name", flex: 2} ,
         {field: "cost", flex: 1},
+        {field: "status", flex: 1},
         {field: "uploaded", flex: 1}
     ];
     const blockSize = 10;
 
     const onRowSelected = (e) => {
-        if (e.node.isSelected()) {
+        if (e.node.isSelected() && e.node.data.status == "solved") {
             setSelectedRow(e.node.data.id);
             setDownloadParams({
                 "puzzleId": e.node.data.id,
@@ -83,6 +84,7 @@ export default function PuzzlesTable() {
                         userId: puzzle.user,
                         name: puzzle.name,
                         cost: puzzle.cost,
+                        status: puzzle.status,
                         uploaded: puzzle.ts
                         })
                     ));

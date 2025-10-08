@@ -38,7 +38,7 @@ const upload = multer({ // files saved here
 }); 
 
 const getpuzzles = require("../middleware/getpuzzles");
-const insertmetadata = require("../middleware/updatemetadata");
+const updatemetadata = require("../middleware/updatemetadata");
 const downloadpuzzle = require("../middleware/downloadpuzzle");
 const hasbearertoken = require("../middleware/hasbearertoken");
 const authorisation = require("../middleware/authorisation");
@@ -48,7 +48,7 @@ const visualizesolution = require("../middleware/visualizesolution");
 
 router.use(hasbearertoken, authorisation, getuserid);
 
-router.post('/solve', upload.single('file'), solvepuzzle, visualizesolution, insertmetadata);
+router.post('/solve', upload.single('file'), solvepuzzle, visualizesolution, updatemetadata);
 
 router.get('/download', downloadpuzzle);
 
@@ -67,6 +67,7 @@ router.get('/', getpuzzles, function(req, res, next) {
         user: puzzle.userid,
         name: puzzle.name,
         cost: puzzle.cost,
+        status: puzzle.status,
         ts: puzzle.ts
     })))
     .then((puzzles) => {

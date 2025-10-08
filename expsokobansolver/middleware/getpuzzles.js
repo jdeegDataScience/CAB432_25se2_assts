@@ -13,7 +13,7 @@ memch.aSet = util.promisify(memch.set);
 /* GET movies search results. */
 module.exports = async function(req, res, next) {
     const selectCols = [
-        'puzzleid', 'userid', 'name', 'cost', 'ts'
+        'puzzleid', 'userid', 'name', 'cost', 'status', 'ts'
     ];
     const cacheKey = (req.user.groups.includes("admins")) ? "admin" : String(req.user.id);
     try {
