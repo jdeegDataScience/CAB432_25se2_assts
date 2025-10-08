@@ -4,7 +4,7 @@ const path = require('path');
 const { spawn } = require('child_process');
 const fs = require('node:fs');
 const os = require('node:os');
-const { PutObjectCommand } = require("@aws-sdk/client-s3");
+const { PutObjectCommand, DeleteObjectCommand } = require("@aws-sdk/client-s3");
 const { s3 } = require("../services/aws");
 
 module.exports = async function renderSolution(req, res, next) {
@@ -46,7 +46,12 @@ module.exports = async function renderSolution(req, res, next) {
             next();
         });
     } catch (err) {
+        // tidy up 
+        s3.send(new DeleteObjectCommand({ Bucket: process.env.S3_BUCKET, Key: req.file.key }));
+        const puzzleId = req.file.key.split("/").pop().split(".")[0];
+        s3.send(new DeleteObjectCommand({ Bucket: process.env.S3_BUCKET, Key: `solutions/${String(req.user.id)}/${puzzleId}.json`}));
+        req.db('puzzles').where({ puzzleid: puzzleId }).del();
         console.error('\nError in visualizesolution middleware:', err);
-        return res.status(500).json({ error: true, message: err.message });
+        return // res.status(500).json({ error: true, message: err.message });
     }
 };

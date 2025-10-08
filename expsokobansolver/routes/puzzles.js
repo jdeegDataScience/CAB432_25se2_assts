@@ -15,16 +15,30 @@ const upload = multer({ // files saved here
                 userId: String(req.user.id)
             });
         },
-        key: function (req, file, cb) {
-            const ext = file.originalname.split('.').pop();
-            const baseName = file.originalname.replace(/\.[^/.]+$/, "");
-            cb(null, `warehouses/${String(req.user.id)}/${baseName}_${Date.now().toString()}.${ext}`);
+        key: async function (req, file, cb) {
+            try {
+                const ext = file.originalname.split('.').pop();
+                const baseName = file.originalname.replace(/\.[^/.]+$/, "");
+                const puzzleKey = `${baseName}_${Date.now().toString()}`;
+                // Create DB record first with status = 'pending'
+                await req.db('puzzles')
+                .insert({
+                    puzzleid: puzzleKey,
+                    userid: req.user.id,
+                    name: baseName,
+                    cost: 0,
+                    status: 'pending'
+                });
+                const s3key = `warehouses/${String(req.user.id)}/${puzzleKey}.${ext}`;
+                cb(null, s3key);
+                
+            } catch (err) {cb(err);}
         }
     }) 
 }); 
 
 const getpuzzles = require("../middleware/getpuzzles");
-const insertmetadata = require("../middleware/insertmetadata");
+const insertmetadata = require("../middleware/updatemetadata");
 const downloadpuzzle = require("../middleware/downloadpuzzle");
 const hasbearertoken = require("../middleware/hasbearertoken");
 const authorisation = require("../middleware/authorisation");
@@ -34,10 +48,7 @@ const visualizesolution = require("../middleware/visualizesolution");
 
 router.use(hasbearertoken, authorisation, getuserid);
 
-router.post('/solve', upload.single('file'), solvepuzzle, visualizesolution, insertmetadata, function(req, res, next) {
-    // send response to user
-    res.json(req.puzzle);
-});
+router.post('/solve', upload.single('file'), solvepuzzle, visualizesolution, insertmetadata);
 
 router.get('/download', downloadpuzzle);
 

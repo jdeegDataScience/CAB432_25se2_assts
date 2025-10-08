@@ -4,14 +4,22 @@ const path = require('node:path');
 const fs = require('node:fs/promises');
 const os = require('node:os');
 require("dotenv").config();
-const { PutObjectCommand, GetObjectCommand } = require("@aws-sdk/client-s3");
+const { PutObjectCommand, GetObjectCommand, DeleteObjectCommand } = require("@aws-sdk/client-s3");
 const { s3 } = require("../services/aws");
 
 module.exports = async function (req, res, next) {
+    // send response to user and solve puzzle async
+    res.json("Puzzle uploaded, finding optimal solution.");
     try {
         console.log('\nSolving puzzle...');
         const puzzleId = req.file.key.split("/").pop().split(".")[0]; // destination file name
         const baseName = req.file.originalname.split(".")[0]; // original file name
+
+        // track progress
+        await req.db('puzzles')
+        .where({ puzzleid: puzzleId })
+        .update({ status: 'solving' });
+
 
         // Download the S3 file to a local temporary path
         const tmpFilePath = path.join(os.tmpdir(), `${Date.now()}_${req.file.originalname}`);
@@ -60,7 +68,12 @@ module.exports = async function (req, res, next) {
         req.puzzle = puzzleRes; // pass to next middleware
         next();
     } catch (err) {
+        // tidy up 
+        s3.send(new DeleteObjectCommand({ Bucket: process.env.S3_BUCKET, Key: req.file.key }));
+        const puzzleId = req.file.key.split("/").pop().split(".")[0];
+        req.db('puzzles').where({ puzzleid: puzzleId }).del();
         console.error('Error in solvepuzzle middleware:', err);
-        res.status(500).json({ error: true , message: err.message });
+        return;
+        // res.status(500).json({ error: true , message: err.message });
     }
 }
