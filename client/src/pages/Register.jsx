@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import ErrorAlert from "../components/ErrorAlert";
 
 export default function Register() {
-    const url = `${localStorage.API_URL}/user/register`;
     const [error, setError] = useState(null);
     const [registerForm, setRegisterForm] = useState(true);
     const [userRegistered, setUserRegistered] = useState(false);
@@ -22,13 +21,14 @@ export default function Register() {
     }
 
     useEffect(() => {
-        if (inputs?.username.length === 0 || inputs?.password.length === 0) {
+        if (inputs?.username?.length === 0 || inputs?.password?.length === 0) {
             setRegisterForm(true);
         }
     }, [inputs]);
 
     const registerUser = (event) => {
         event.preventDefault();
+        const url = `${localStorage.API_URL}/user/register`;
 
         return fetch(url, {
             method: "POST",
@@ -58,7 +58,7 @@ export default function Register() {
             })
             .then(() => { 
                 setError(null);
-                setInputs({ "email": inputs.email, "username": inputs.username, "password": null});
+                // setInputs({ "email": inputs.email, "username": inputs.username, "password": null});
             })
             .catch((e) => {
                 setError(e);
@@ -69,6 +69,7 @@ export default function Register() {
 
     const confirmUser = (event) => {
         event.preventDefault();
+        const url = `${localStorage.API_URL}/user/confirm`;
 
         return fetch(url, {
             method: "POST",
@@ -113,7 +114,7 @@ export default function Register() {
                 {
                     userConfirmed ? <div className="alert login">
                         <h2>Confirmation Successful!</h2>
-                        <p>Please login to access all features</p>
+                        <Link to="/login">Please login to access all features</Link>
                     </div> : null
                 }
                 <div className="inputs">
@@ -159,7 +160,7 @@ export default function Register() {
                 <div className="subtle">
                     <div className="underline"></div>
                     <button onClick={HandleClick}>
-                        or { registerForm ? "Register New User":"Confirm Account with Code" }
+                        or { registerForm ? "Confirm Account with Code":"Register New User" }
                     </button>
                 </div> 
             }

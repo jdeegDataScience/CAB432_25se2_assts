@@ -28,7 +28,7 @@ export default function Login() {
     }
 
     useEffect(() => {
-        if (!inputs?.session || inputs?.username.length === 0 || inputs?.password.length === 0) {
+        if (!inputs?.session || inputs?.username?.length === 0 || inputs?.password?.length === 0) {
             setMfaForm(false);
             setUserLoginInit(false);
         }

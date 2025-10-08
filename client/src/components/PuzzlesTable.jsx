@@ -120,31 +120,3 @@ export default function PuzzlesTable() {
         
     )
 }
-
-
-/* useEffect(() => {
-    console.log('');
-    console.log("PuzzlesTable (Child B)");
-    console.log("Child B context state after update: " + searchURL);
-
-    console.log('');
-    console.log("PuzzlesTable (Child B) Update A different Var");
-
-    fetch(searchURL)
-    .then((res) => res.json())
-    .then((data) => { 
-        setTotalNumResults(data.pagination.total);
-        console.log("Total Puzzles Returned: " + data.pagination.total); 
-    });       
-}, [searchURL]); */
-
-/* useEffect(() => { 
-    fetch(searchURL)
-    .then((res) => res.json())
-    .then((data) => {
-        if (data.data?.length) {
-            setSelectedRow(data.data[0].imdbID);
-            console.log("Total Puzzles Returned: " + data.pagination.total);
-        }
-    });       
-}, [searchURL]); */

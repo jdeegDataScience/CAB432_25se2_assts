@@ -19,7 +19,7 @@ export default function Puzzles() {
     }, [authenticated]);
 
     return (
-        <div className="container puzzles">
+        <div className="container puzzles" id={authenticated}>
             <ErrorAlert errorState={error} dismissError={() => {setError(null);}} />
             <SolvePuzzleBar />
             <PuzzlesTable />

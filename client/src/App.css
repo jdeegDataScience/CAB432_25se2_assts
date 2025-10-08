@@ -4,37 +4,36 @@
     box-sizing: border-box;
 }
 
-.video-details {
+.puzzle-details {
     display: flex;
     flex-direction: row;
     margin: 0% 2%;
     justify-content: space-between;
 }
 
-.video-details  h3, h4 {
+.puzzle-details  h3, h4 {
     margin: 0%;
     margin-bottom: 2%;
 }
-.video-details p {
+.puzzle-details p {
     margin: 0%;
 }
 
-.container.videos h2{
+.container.puzzles h2{
     margin-bottom: 2%;
     margin: auto;
 }
 
-.search-form{
+.puzzle-form, .download-form{
     display: flex;
-    flex-direction: row;
-    margin: auto;
+    flex-direction: column;
     margin: 1% 2%;
-    width: 96%;
+    width: max-content;
     justify-content: center;
     align-items: center;
 }
 
-.search-form input{
+.puzzle-form input{
     background: #FFF4EB;
     color: #2B3233;
     border: none;
@@ -42,19 +41,19 @@
     outline: none;
     text-align: left;
     text-indent: 10%;
-    margin: 0% 3% 0% 1%;
+    margin: 0.5% 3%;
     min-height: 2em;
 }
 
-.search-form input:invalid {
+.puzzle-form input:invalid {
     border: #ff3c00 solid 3px;
 }
 
-.search-bar{
+.puzzle-bar{
     display: flex;
     flex-direction: row;
     padding: 0.5% 1%;
-    margin: 0% auto;
+    margin: auto;
     background: #FA9C55;
     color: #2B3233;
     border-radius: 10px;
@@ -62,22 +61,20 @@
     justify-content: center;
 }
 
-.video-panel {
+.puzzle-panel {
     display: flex;
     flex-direction: column;
     align-items: center;
-    flex-shrink: 2;
 }
 
-.featured-video{
-    flex-shrink: 4;
+.featured-puzzle{
     display: flex;
     flex-direction: column;
     margin-right: 2%;
     align-items: center;
 }
 
-.featured-video img{
+.featured-puzzle img{
     min-height: 350px;
     min-width: 237px;
     max-height: 500px;
@@ -93,21 +90,20 @@
     height: 100%;
 }
 
-.videos-table-wrapper{
+.puzzles-table-wrapper{
     display: flex;
     flex-direction: row;
-    flex-shrink: 1;
-    width: 100%;
+    width: 90%;
     height: 80%;
     flex: 4 1 0;
+    margin: auto;
     padding: 1% 2.5%;
-    justify-self: center;
-    justify-content: space-around;
 }
 
-.container.videos{
+.container.puzzles{
     padding: 1% 0%;
-    flex-shrink: 2;
+    flex-shrink: 1;
+    justify-content: space-evenly;
     margin-bottom: 2%;
     max-width: 1300px;
 }
@@ -120,8 +116,7 @@
     color: #F0F9FA;
     border-radius: 30px;
     width: 90%;
-    height: fit-content;
-    flex-shrink: 1;
+    height: max-content;
 }
 
 .alert.login{
@@ -250,6 +245,7 @@
 .submit-container{
     align-self: center;
     align-items: center;
+    margin: auto;
 }
 
 .submit-container button{

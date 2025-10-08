@@ -36,8 +36,22 @@ export default function FeaturePuzzle() {
             console.error(err.message);
             return null;
         });
-        if (presignedURL?.length) {
-            fetch(presignedURL);
+        if (presignedURL?.length > 0) {
+            // Fetch the actual file from S3
+            const fileResponse = await fetch(presignedURL);
+            const blob = await fileResponse.blob();
+
+            // Create a temp object URL and trigger download
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `${downloadParams.puzzleId}.gif`; // You can set your preferred filename
+            document.body.appendChild(a);
+            a.click();
+
+            // Cleanup
+            a.remove();
+            window.URL.revokeObjectURL(url);
         };
         return;
     }
@@ -45,19 +59,13 @@ export default function FeaturePuzzle() {
     return (
         <div className="featured-puzzle">
             <form onSubmit={handleSubmit} className="download-form">
-                <h3>Available Download Files For Puzzle {downloadParams.name}</h3>
-                <label>
-                    <input type="radio" name="downloadTarget" value="warehouses" />
-                    Warehouse Puzzle File
-                </label>
-                <label>
-                    <input type="radio" name="downloadTarget" value="solutions" />
-                    Solution Moves
-                </label>
-                <label>
-                    <input type="radio" name="downloadTarget" value="gifs" />
-                    Solution GIF
-                </label>
+                <label for="download-select">Choose a {downloadParams.name} File to  Download:</label>
+                <select name="downloadTarget" id="download-select">
+                    <option value="">--Please choose an option--</option>
+                    <option value="warehouses">Warehouse Puzzle File</option>
+                    <option value="solutions">Solution Moves</option>
+                    <option value="gifs">Solution GIF</option>
+                </select>
                 <div className="submit-container">
                     <button type="submit" id="submit-button">Download</button>
                 </div>
