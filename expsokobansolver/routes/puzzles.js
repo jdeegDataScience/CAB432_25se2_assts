@@ -53,12 +53,12 @@ router.post('/upload', upload.single('file'), function(req, res) {
     res.status(200).json({
         error: false,
         message: 'File uploaded successfully',
-        puzzleId: req.file.key.split("/").pop().split(".")[0]
+        puzzleId: req.file.key.split("/").pop().split(".").shift()
     });
 });
 
 
-router.post('/solve', upload.single('file'), solvepuzzle, visualizesolution, updatemetadata);
+// router.post('/solve', upload.single('file'), solvepuzzle, visualizesolution, updatemetadata);
 
 router.get('/download', downloadpuzzle);
 
