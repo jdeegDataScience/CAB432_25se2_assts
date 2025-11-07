@@ -23,7 +23,9 @@
     "@aws-sdk/client-secrets-manager": "^3.926.0",
     "@aws-sdk/client-sqs": "^3.926.0",
     "@aws-sdk/client-ssm": "^3.926.0",
+    "dotenv": "^17.2.3",
     "knex": "^3.1.0",
+    "pg": "^8.16.3",
     "workerpool": "^10.0.0"
   }
 }

@@ -1,6 +1,6 @@
-require('dotenv').config();
+import knexInit from 'knex';
 
-export default {
+const options = {
     client: process.env?.DB_CLIENT || 'mysql2',
     connection: {
         host: process.env?.DB_HOST || "127.0.0.1",
@@ -12,3 +12,9 @@ export default {
     },
     searchPath: [process.env.DB_USER, 'public']
 };
+
+// console.log("Knex Config options:\n", options);
+
+const knex = knexInit(options);
+
+export { knex };

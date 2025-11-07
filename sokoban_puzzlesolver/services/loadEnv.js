@@ -2,7 +2,7 @@
 import {  GetSecretValueCommand } from "@aws-sdk/client-secrets-manager";
 import { GetParameterCommand } from "@aws-sdk/client-ssm";
 
-import { secrets, ssm } from "./aws";
+import { secrets, ssm } from "./aws.js";
 
 export async function loadEnv() {
     const secretCommand = new GetSecretValueCommand({ SecretId: "n11022639-asst2" });
@@ -36,5 +36,5 @@ export async function loadEnv() {
     process.env.USER_POOL_ID = secretsParsed.USER_POOL_ID;
     process.env.APP_CLIENT_ID = secretsParsed.APP_CLIENT_ID;
     process.env.APP_CLIENT_SECRET = secretsParsed.APP_CLIENT_SECRET;
-    console.log("\nEnv secrets and params loaded.");
+    // console.log("\nEnv secrets and params loaded.");
 }

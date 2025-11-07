@@ -3,23 +3,18 @@ import { worker } from "workerpool";
 import { sqs, s3 } from "./services/aws.js";
 import { DeleteMessageCommand } from "@aws-sdk/client-sqs";
 import { PutObjectCommand, GetObjectCommand, DeleteObjectCommand }  from "@aws-sdk/client-s3";
-// import * as util from 'node:util';
-// import { exec } from util.promisify(require('node:child_process').exec);
 import { promisify } from 'node:util';
 import { exec as execCb } from 'node:child_process';
+import { knex } from './services/knexfile.js';
 
 const exec = promisify(execCb);
 import * as path from 'node:path';
 import { fileURLToPath } from 'url';
 import * as fs from 'node:fs/promises';
 import os from 'node:os';
-import * as options from './knexfile.js';
-import knexInit from 'knex';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const knex = knexInit(options);
-// const bucket = process.env.S3_BUCKET || 'n11022639-asst2';
 
 
 async function processAndDeleteMessages(msg, sqsQueueUrl) {
@@ -27,33 +22,28 @@ async function processAndDeleteMessages(msg, sqsQueueUrl) {
     // solve puzzle
     await solve_puzzle(msg);
     // delete message id
-    console.log("\nAttempting Delete for Message:", msg.MessageId);
+    // console.log("\nAttempting Delete for Message:", msg.MessageId);
     // Delete the message after dealt with.
     const deleteCommand = new DeleteMessageCommand({
         QueueUrl: sqsQueueUrl,
         ReceiptHandle: msg.ReceiptHandle,
     });
-    sqs.send(deleteCommand);
-    return;
+    const delAttemptRes = await sqs.send(deleteCommand).catch(err => {
+        console.error("Error deleting message:", err.Code);
+        return err;
+    });
+    // console.log("Delete Status: ", delAttemptRes.$metadata.httpStatusCode);
+    return true;
 };
 
 async function solve_puzzle(msg) {
     try {
-        console.log("\nHello from solve_puzzle() in processAndDeleteMessages Worker Thread!\n");
-
         // Retrieve the first message from the body
-        console.log("\nMessage ID:", msg.MessageId);
+        // console.log('\nParsing message...\nMessage ID:', msg.MessageId);
+        
         // Retrieve body
-        console.log("Message Body Type:", typeof msg.Body);
-        console.log("Message.Body == { bucket, key } ?\n", msg.Body);
-        
-        
-        // Retrieve atrributes
-        // console.log("My Message Attributes:");
-        // console.log(msg.MessageAttributes);
-
-        console.log('\nSolving puzzle...');
         const bodyObj = JSON.parse(msg.Body);
+        // console.log("Message.Body:\n", bodyObj);
         const s3bucket = bodyObj.bucket;
         const s3key = bodyObj.key;
         const userId = s3key.split("/")[1];
@@ -62,6 +52,7 @@ async function solve_puzzle(msg) {
         const baseName = puzzleId.slice(0, -14); // base puzzle name
 
         // track progress
+        // console.log("Updating DB:\n", { puzzleid: puzzleId, status: 'solving' });
         await knex('puzzles')
         .where({ puzzleid: puzzleId })
         .update({ status: 'solving' });
@@ -87,14 +78,16 @@ async function solve_puzzle(msg) {
         });
 
         // Run Python script on local file
+        // console.log('\nSolving puzzle...');
         const scriptPath = path.resolve(__dirname, 'py_scripts/solvePuzzle.py');
         const { stdout, stderr } = await exec(`python "${scriptPath}" "${tmpFilePath}"`);
 
         if (stderr && stderr.trim()) {
-            return res.status(500).json({ error: true, message: stderr });
+            throw new Error(stderr);
         }
 
         const puzzleRes = JSON.parse(stdout);
+        // console.log("Puzzle solved. Solution:", puzzleRes);
         // params for uploading solution JSON to S3
         const params = {
             Bucket: s3bucket,
@@ -108,17 +101,17 @@ async function solve_puzzle(msg) {
         };
 
         await s3.send(new PutObjectCommand(params));
+        return true;
     } catch (err) {
         const bodyObj = JSON.parse(msg.Body);
         const s3bucket = bodyObj.bucket;
         const s3key = bodyObj.key;
-        const puzzleId = s3key.split("/").pop().split(".")[0];
+        const puzzleId = s3key.split("/").pop().split(".").shift();
         // tidy up 
         s3.send(new DeleteObjectCommand({ Bucket: s3bucket, Key: s3key }));
         knex('puzzles').where({ puzzleid: puzzleId }).del();
         console.error('Error in solvepuzzle middleware:', err);
-        return;
-        // res.status(500).json({ error: true , message: err.message });
+        return false;
     }
 }
 

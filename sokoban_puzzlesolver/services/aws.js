@@ -1,10 +1,23 @@
 // centralised aws service clients
-require("dotenv").config();
-import { S3Client } from "aws-sdk/client-s3";
-import { SecretsManagerClient } from "aws-sdk/client-secrets-manager";
+import { S3Client } from "@aws-sdk/client-s3";
+import { SecretsManagerClient } from "@aws-sdk/client-secrets-manager";
 import { CognitoIdentityProviderClient } from "@aws-sdk/client-cognito-identity-provider";
 import { SSMClient } from "@aws-sdk/client-ssm";
 import { SQSClient } from "@aws-sdk/client-sqs";
+
+import fs from 'node:fs';
+import path from 'node:path';
+import dotenv from 'dotenv';
+
+const envPath = path.resolve(process.cwd(), '.env');
+
+if (fs.existsSync(envPath)) {
+  dotenv.config({ path: envPath });
+  // console.log(`Loaded environment variables from ${envPath}`);
+} else {
+  // console.log('.env file not found, skipping dotenv load');
+}
+
 
 // const { SESClient } = require("@aws-sdk/client-ses");
 // const { S3RequestPresigner } = require("@aws-sdk/s3-request-presigner");
