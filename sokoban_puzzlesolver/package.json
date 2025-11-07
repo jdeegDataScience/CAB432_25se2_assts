@@ -1,0 +1,29 @@
+{
+  "name": "sokoban_puzzlesolver",
+  "version": "1.0.0",
+  "description": "Sokoban puzzle solver microservices module",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jdeegDataScience/CAB432_25se2_assts.git"
+  },
+  "author": "Jade Deegan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jdeegDataScience/CAB432_25se2_assts/issues"
+  },
+  "homepage": "https://github.com/jdeegDataScience/CAB432_25se2_assts#readme",
+  "dependencies": {
+    "@aws-sdk/client-cognito-identity-provider": "^3.926.0",
+    "@aws-sdk/client-s3": "^3.926.0",
+    "@aws-sdk/client-secrets-manager": "^3.926.0",
+    "@aws-sdk/client-sqs": "^3.926.0",
+    "@aws-sdk/client-ssm": "^3.926.0",
+    "knex": "^3.1.0",
+    "workerpool": "^10.0.0"
+  }
+}

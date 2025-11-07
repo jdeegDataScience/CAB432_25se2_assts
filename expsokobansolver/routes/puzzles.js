@@ -48,6 +48,16 @@ const visualizesolution = require("../middleware/visualizesolution");
 
 router.use(hasbearertoken, authorisation, getuserid);
 
+router.post('/upload', upload.single('file'), function(req, res) {
+    // File has been uploaded to S3 and DB record created.
+    res.status(200).json({
+        error: false,
+        message: 'File uploaded successfully',
+        puzzleId: req.file.key.split("/").pop().split(".")[0]
+    });
+});
+
+
 router.post('/solve', upload.single('file'), solvepuzzle, visualizesolution, updatemetadata);
 
 router.get('/download', downloadpuzzle);
