@@ -15,20 +15,11 @@ const upload = multer({ // files saved here
                 userId: String(req.user.id)
             });
         },
-        key: async function (req, file, cb) {
+        key: function (req, file, cb) {
             try {
                 const ext = file.originalname.split('.').pop();
                 const baseName = file.originalname.replace(/\.[^/.]+$/, "");
                 const puzzleKey = `${baseName}_${Date.now().toString()}`;
-                // Create DB record first with status = 'pending'
-                await req.db('puzzles')
-                .insert({
-                    puzzleid: puzzleKey,
-                    userid: req.user.id,
-                    name: baseName,
-                    cost: 0,
-                    status: 'pending'
-                });
                 const s3key = `warehouses/${String(req.user.id)}/${puzzleKey}.${ext}`;
                 cb(null, s3key);
                 
@@ -48,12 +39,23 @@ const visualizesolution = require("../middleware/visualizesolution");
 
 router.use(hasbearertoken, authorisation, getuserid);
 
-router.post('/upload', upload.single('file'), function(req, res) {
+router.post('/upload', upload.single('file'), async function(req, res) {
+    const puzzleKey = req.file.key.split("/").pop().split(".").shift();
+    const baseName = req.file.originalname.replace(/\.[^/.]+$/, "");
+    // Create DB record first with status = 'pending'
+    await req.db('puzzles')
+    .insert({
+        puzzleid: puzzleKey,
+        userid: req.user.id,
+        name: baseName,
+        cost: 0,
+        status: 'queued'
+    });
     // File has been uploaded to S3 and DB record created.
     res.status(200).json({
         error: false,
         message: 'File uploaded successfully',
-        puzzleId: req.file.key.split("/").pop().split(".").shift()
+        puzzleId: puzzleKey
     });
 });
 

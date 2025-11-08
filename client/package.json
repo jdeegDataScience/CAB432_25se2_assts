@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "ag-grid-react": "^34.2.0",
+    "form-data": "^4.0.4",
+    "node-fetch": "^3.3.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-router-dom": "^7.9.3"

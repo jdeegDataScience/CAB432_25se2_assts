@@ -21,7 +21,7 @@ import Footer from './components/Footer';
 
 
 function App() {
-    localStorage.setItem("API_URL", `http://api.sokobansolver.cab432.com`);
+    localStorage.setItem("API_URL", `https://api.sokobansolver.cab432.com`);
     const [authenticated, setAuthenticated] = useState(false);
     // const [ isTokensRefreshed, loading, refreshError ] = useRefreshToken();
     const [error, setError] = useState();
